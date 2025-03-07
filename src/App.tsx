@@ -1,7 +1,10 @@
+import React from "react";
+import Routes from "./routes/Routes";
+
 const App = () => {
   return (
-    <div style={{ fontWeight: "bold", fontSize: "20px", textAlign: "center" }}>
-      IB - Communication
+    <div style={{ height: "100vh", width: "100vw" }}>
+      <Routes />
     </div>
   );
 };
