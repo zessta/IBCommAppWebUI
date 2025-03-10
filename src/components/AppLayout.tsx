@@ -6,8 +6,8 @@ import WindowIcon from '@mui/icons-material/Window';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 const menuItems = [
-    { id: 1, to : "/home", text: "Home", icon: <HomeIcon /> },
-    { id: 2, to : "/admin", text: "Admin", icon: <AdminPanelSettingsIcon/> },
+    { id: 1, to : "/ib/home", text: "Home", icon: <HomeIcon /> },
+    { id: 2, to : "/ib/admin", text: "Admin", icon: <AdminPanelSettingsIcon/> },
   ];
 
 

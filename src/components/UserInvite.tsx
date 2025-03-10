@@ -10,41 +10,29 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
-
-const roles = [
-  {
-    id: 1,
-    label: "Admin",
-    value: "admin",
-  },
-  {
-    id: 2,
-    label: "User",
-    value: "user",
-  },
-];
+import useRoles from "../hooks/useRoles";
 
 const UserInvite = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [badgeId, setBadgeId] = useState("");
   const [role, setRole] = useState("");
+  const {roles} = useRoles();
 
   const handleInvite = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Add invite logic here
-    // console.log("Invited:", email, username, badgeId);
-
+    console.log(role)
     setEmail("");
     setUsername("");
     setBadgeId("");
     setRole("");
   };
 
+
+
   return (
     <Box
       sx={{
-        width: "500px",
         p: 2,
       }}
     >
@@ -98,9 +86,9 @@ const UserInvite = () => {
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
-            {roles.map(({ id, label, value }) => (
-              <MenuItem key={id} value={value}>
-                {label}
+            {roles.map(({ id, role }) => (
+              <MenuItem key={id} value={role}>
+                {role}
               </MenuItem>
             ))}
           </Select>
