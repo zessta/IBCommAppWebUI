@@ -12,7 +12,7 @@ const AdminDashboard = () => {
         <Grid size={{xs:12, md:4}}>
           <UserInvite />
         </Grid>
-        <Grid size={{xs:12, md:8}}>
+        <Grid size={{xs:12, md:4}}>
           <UsersTable />
         </Grid>
       </Grid>

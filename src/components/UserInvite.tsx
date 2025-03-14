@@ -11,24 +11,25 @@ import {
   FormControl,
 } from "@mui/material";
 import useRoles from "../hooks/useRoles";
+import { inviteUser } from "../api/requests/inviteUser";
 
 const UserInvite = () => {
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [badgeId, setBadgeId] = useState("");
   const [role, setRole] = useState("");
   const {roles} = useRoles();
 
-  const handleInvite = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleInvite = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(role)
+    
+    const response = await inviteUser({name, email, role, badgeId});
+    console.log(response);
     setEmail("");
-    setUsername("");
+    setName("");
     setBadgeId("");
     setRole("");
   };
-
-
 
   return (
     <Box
@@ -48,8 +49,8 @@ const UserInvite = () => {
           name="username"
           required
           fullWidth
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
         <TextField
           variant="outlined"

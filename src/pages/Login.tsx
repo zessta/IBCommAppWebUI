@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, TextField, Button, Typography, Box, SxProps, CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { signInApi } from "../api/requests/signIn";
+import { getItem, setItem } from "../utils/utils";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,7 +20,8 @@ const Login = () => {
       const response = await signInApi({email, password})
       // eslint-disable-next-line no-constant-condition
       if(response?.status === 200){
-        navigate("/ib/home");
+        setItem({key:"token", value:response?.data?.token});
+        navigate("/");
       }
       else{
         console.log(response?.data);
@@ -27,6 +29,13 @@ const Login = () => {
       setLoader(false)
     }, 2000)
   };
+
+  useEffect(() => {
+    const token = getItem("token");
+    if (token) {
+      navigate("/");
+    }
+  },[])
   return (
     <Container
       maxWidth="sm"

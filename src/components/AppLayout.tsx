@@ -1,22 +1,28 @@
 import React, { useState } from "react";
-import { Box, List, ListItem, ListItemText, Drawer, ListItemIcon, ListItemButton, Typography } from "@mui/material";
-import { Outlet, Link } from "react-router-dom";
+import { Box, List, ListItem, ListItemText, Drawer, ListItemIcon, ListItemButton, Typography, Button } from "@mui/material";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
 import WindowIcon from '@mui/icons-material/Window';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import EventIcon from '@mui/icons-material/Event';
+import { EVENTTAG } from "../routes/routePaths";
 
 const menuItems = [
-    { id: 1, to : "/ib/home", text: "Home", icon: <HomeIcon /> },
-    { id: 2, to : "/ib/admin", text: "Admin", icon: <AdminPanelSettingsIcon/> },
+    { id: 1, to : "/", text: "Home", icon: <HomeIcon /> },
+    { id: 3, to : EVENTTAG, text: "Event Tag", icon: <EventIcon/> },
+    { id: 2, to : "/admin", text: "Admin", icon: <AdminPanelSettingsIcon/> },
   ];
 
 
 const Sidebar = () => {
     const [selectedMenu, setSelectedMenu] = useState(0);
+    const navigate = useNavigate();
+
 
     const handleSelect = (id:number) => {
         setSelectedMenu(id);
       };
+
   return (
     <Drawer variant="permanent" anchor="left" sx={{
         "& .MuiDrawer-paper": {
@@ -27,7 +33,7 @@ const Sidebar = () => {
             bgcolor: "#1976d2", // Highlight color
             }
     }}>
-      <Box sx={{ width: 200, height:"100vh" }}>
+      <Box sx={{ width: 200, height:"100vh", display:"flex", flexDirection:"column", justifyContent:"space-between"}}>
         <List sx={{paddingY:"0px"}}>
             <ListItem sx={{
                 bgcolor:"#06345c",
@@ -61,6 +67,7 @@ const Sidebar = () => {
             ))
           }
         </List>
+        <Button variant="contained" sx={{m:2}} onClick={() => {navigate("/signout")}}>Logout</Button>
       </Box>
     </Drawer>
   );

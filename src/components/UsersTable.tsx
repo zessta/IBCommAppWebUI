@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -7,41 +7,47 @@ import {
   TableHead,
   TableRow,
   Paper,
-  TextField,
   IconButton,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { getUsers } from "../api/requests/getUsers";
+import useRoles from "../hooks/useRoles";
+import { removeUserRole } from "../api/requests/removeUserRole";
 
 type RowData = {
-  id: number;
-  name: string;
-  email: string;
-  age: number;
+  userId: number;
+  role: string
 };
 
-const initialData: RowData[] = [
-  { id: 1, name: "John Doe", email: "john@gmail.com", age: 25 },
-  { id: 2, name: "Alice Smith", email: "alice@gmail.com", age: 30 },
-  { id: 3, name: "Bob Johnson", email: "bob@gmail.com", age: 35 },
-];
-
 const UsersTable: React.FC = () => {
-  const [data, setData] = useState<RowData[]>(initialData);
+  const [data, setData] = useState<RowData[]>([]);
   const [editRowId, setEditRowId] = useState<number | null>(null);
   const [editedData, setEditedData] = useState<RowData | null>(null);
 
+  const {roles} = useRoles();
+
+  const fetchUsers = async()=>{
+    const response = await getUsers();
+    setData(response.data)
+  }
+
   const handleEdit = (row: RowData) => {
-    setEditRowId(row.id);
+    setEditRowId(row.userId);
     setEditedData({ ...row });
   };
 
   const handleSave = () => {
     setData((prevData) =>
       prevData.map((item) =>
-        item.id === editRowId && editedData ? { ...editedData } : item
+        item.userId === editRowId && editedData ? { ...editedData } : item
       )
     );
     setEditRowId(null);
@@ -53,74 +59,69 @@ const UsersTable: React.FC = () => {
     setEditedData(null);
   };
 
-  const handleDelete = (id: number) => {
-    setData((prevData) => prevData.filter((item) => item.id !== id));
+  const handleDelete = async ({userId, role}:{userId: number, role:string}) => {
+    const response = await removeUserRole({userId, role});
+    console.log(response)
+    await fetchUsers();
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: keyof RowData) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement > | SelectChangeEvent, field: keyof RowData) => {
     setEditedData((prevData) => ({
       ...prevData!,
       [field]: e.target.value,
     }));
   };
+  
+  useEffect(()=>{
+    fetchUsers();
+  },[])
 
   return (
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell><strong>Name</strong></TableCell>
-            <TableCell><strong>Email</strong></TableCell>
-            <TableCell><strong>Age</strong></TableCell>
+            <TableCell><strong>User ID</strong></TableCell>
+            <TableCell><strong>Role</strong></TableCell>
             <TableCell align="center" width={80}><strong>Actions</strong></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((row) => (
-            <TableRow key={row.id}>
-              {/* Name Field */}
-              <TableCell>
-                {editRowId === row.id ? (
-                  <TextField
-                    value={editedData?.name}
-                    onChange={(e) => handleChange(e, "name")}
-                    size="small"
-                  />
-                ) : (
-                  row.name
-                )}
-              </TableCell>
+            <TableRow key={row.userId}>
 
-              {/* Email Field */}
-              <TableCell>
-                {editRowId === row.id ? (
-                  <TextField
-                    value={editedData?.email}
-                    onChange={(e) => handleChange(e, "email")}
-                    size="small"
-                  />
-                ) : (
-                  row.email
-                )}
+              <TableCell width={70}>
+                { row.userId }
               </TableCell>
-
-              {/* Age Field */}
               <TableCell>
-                {editRowId === row.id ? (
-                  <TextField
-                    value={editedData?.age}
-                    onChange={(e) => handleChange(e, "age")}
-                    size="small"
-                    type="number"
-                  />
-                ) : (
-                  row.age
+                {editRowId === row.userId ? (
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      fullWidth
+                      value={editedData?.role}
+                      onChange={(e: SelectChangeEvent) => handleChange(e, "role")}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      {roles.map(({ id, role }) => (
+                        <MenuItem key={id} value={role}>
+                          {role}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  ) : (
+                    row.role
                 )}
               </TableCell>
 
               {/* Action Buttons */}
               <TableCell align="center" width={80}>
-                {editRowId === row.id ? (
+                {editRowId === row.userId ? (
                   <>
                     <IconButton color="success" onClick={handleSave}>
                       <SaveIcon />
@@ -134,7 +135,7 @@ const UsersTable: React.FC = () => {
                     <IconButton color="primary" onClick={() => handleEdit(row)}>
                       <EditIcon />
                     </IconButton>
-                    <IconButton color="error" onClick={() => handleDelete(row.id)}>
+                    <IconButton color="error" onClick={() => handleDelete({userId:row.userId, role:row.role})}>
                       <DeleteIcon />
                     </IconButton>
                   </>
