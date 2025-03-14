@@ -15,7 +15,8 @@ import { getItem } from "../utils/utils";
 import SignOut from "../components/SignOut";
 import PageNotFound from "../pages/PageNotFound";
 import EventTag from "../pages/EventTag";
-import { ACCESSDENIED, ADMINPATH, EVENTTAG } from "./routePaths";
+import { ACCESSDENIED, ADMINPATH, EVENTTAGPATH, ROLESPATH } from "./routePaths";
+import Roles from "../pages/Roles";
 
 const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
   const token = getItem("token");
@@ -63,10 +64,18 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: EVENTTAG,
+        path: EVENTTAGPATH,
         element: (
           <AuthWrapper>
             <EventTag />
+          </AuthWrapper>
+        ),
+      },
+      {
+        path: ROLESPATH,
+        element: (
+          <AuthWrapper>
+            <Roles />
           </AuthWrapper>
         ),
       },
