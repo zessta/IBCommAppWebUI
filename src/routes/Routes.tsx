@@ -7,16 +7,15 @@ import {
 import Login from "../pages/Login";
 import AdminDashboard from "../pages/AdminDashboard";
 import AppLayout from "../components/AppLayout";
-import Home from "../pages/Home";
 import SignUp from "../pages/SignUp";
-// import RedirectPage from "../pages/RedirectPage";
 import AccessDenied from "../pages/AccessDenied";
 import { getItem } from "../utils/utils";
 import SignOut from "../components/SignOut";
 import PageNotFound from "../pages/PageNotFound";
 import EventTag from "../pages/EventTag";
-import { ACCESSDENIED, ADMINPATH, EVENTTAGPATH, ROLESPATH } from "./routePaths";
+import { ACCESSDENIED, ADMINPATH, BASE, EVENTTAGPATH, LOGINPATH, ROLESPATH, SIGNOUTPATH, SIGNUPPATH } from "./routePaths";
 import Roles from "../pages/Roles";
+import Users from "../pages/Users";
 
 const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
   const token = getItem("token");
@@ -28,19 +27,19 @@ const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
 
 const router = createBrowserRouter([
   {
-    path: "/login",
+    path: LOGINPATH,
     element: <Login />,
   },
   {
-    path: "/signup/:encodedString",
+    path: SIGNUPPATH,
     element: <SignUp />,
   },
   {
-    path: "/signout",
+    path: SIGNOUTPATH,
     element: <SignOut />,
   },
   {
-    path: "/",
+    path: BASE,
     element: (
       <AuthWrapper>
         <AppLayout />
@@ -48,10 +47,10 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/",
+        path: BASE,
         element: (
           <AuthWrapper>
-            <Home />
+            <Users />
           </AuthWrapper>
         ),
       },
