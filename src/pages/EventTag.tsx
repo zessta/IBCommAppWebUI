@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Button, Grid2, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import CreateTag from "../components/CreateTag";
+import { Box, Button, TextField } from "@mui/material";
 import EventTagsList from "../components/EventTagsList";
 import { getEventTags } from "../api/requests/events";
 import { GRAY, VIOLET, WHITE } from "../utils/constants";
@@ -32,15 +31,6 @@ const EventTag = () => {
   }, []);
   return (
     <Box sx={{ flexGrow: 1, bgcolor: WHITE.main, borderRadius:"18px"}}>
-      {/* <Typography variant="h5" mb={2} ml={2}>Event Tags</Typography> */}
-      {/* <Grid2 container spacing={2} sx={{display:"flex", p:2, justifyContent:"space-between"}}>
-        <Grid2 size={4}>
-            <CreateTag currentTag={currentTag} setCurrentTag={setCurrentTag} fetchEventTags={fetchEventTags}/>
-        </Grid2>
-        <Grid2 size={6}>
-            <EventTagsList tags={tags} setCurrentTag={setCurrentTag}/>
-        </Grid2>
-      </Grid2> */}
       <Box
         display={"flex"}
         justifyContent={"space-between"}

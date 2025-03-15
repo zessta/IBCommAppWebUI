@@ -125,8 +125,8 @@ const handleSubmit = async () => {
             </Box>
           </Box>
             <Box display={"flex"} justifyContent={"flex-end"} sx={{height:"47px", mt:"auto"}}>
-                <Button variant="outlined" sx={{color:VIOLET.dark, borderColor:VIOLET.dark, borderRadius:"9px", mr:2}} onClick={handleReset}>Reset</Button>
-                <Button variant="contained" sx={{bgcolor:VIOLET.dark, borderRadius:"9px"}} onClick={handleSubmit}>Submit</Button>
+                <Button variant="outlined" sx={{color:VIOLET.dark, borderColor:VIOLET.dark, borderRadius:"9px", mr:2, width:"96px"}} onClick={handleReset}>Reset</Button>
+                <Button variant="contained" sx={{bgcolor:VIOLET.dark, borderRadius:"9px", width:"96px"}} onClick={handleSubmit}>Submit</Button>
             </Box>
         </Box>
       </Modal>
