@@ -7,6 +7,7 @@ export const VIOLET = {
 
 export const GRAY = {
   light: "#F6F8FE",
+  dark: "#B3B3B3",
 };
 
 export const WHITE = {

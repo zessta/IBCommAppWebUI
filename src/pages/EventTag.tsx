@@ -12,6 +12,8 @@ const EventTag = () => {
   const [tags, setTags] = useState<any>([]);
   const [currentTag, setCurrentTag] = useState<any>(null);
   const [showCreateTag, setShowCreateTag] = useState(false);
+  const [searchTag, setSearchTag] = useState('');
+  const [filteredTags, setFilteredTags] = useState([]);
 
   const handleCloseTagCreation = () => {
     setShowCreateTag(false);
@@ -21,7 +23,6 @@ const EventTag = () => {
   const fetchEventTags = async () => {
     const response = await getEventTags();
     if (response.status === 200) {
-      console.log(response.data);
       setTags(response.data);
     }
   };
@@ -29,6 +30,11 @@ const EventTag = () => {
   useEffect(() => {
     fetchEventTags();
   }, []);
+
+  useEffect(() => {
+    const filtered = tags.filter((tag:any) => tag.name.toLowerCase().includes(searchTag.toLowerCase()));
+    setFilteredTags(filtered);
+  }, [searchTag, tags]);
   return (
     <Box sx={{ flexGrow: 1, bgcolor: WHITE.main, borderRadius:"18px"}}>
       <Box
@@ -40,6 +46,7 @@ const EventTag = () => {
       >
         <TextField
           placeholder="Search Tag list"
+          onChange={(e) => setSearchTag(e.target.value)}
           sx={{
             bgcolor: GRAY.light,
             "& .MuiOutlinedInput-root": {
@@ -74,7 +81,7 @@ const EventTag = () => {
           <AddIcon sx={{ mr: 1 }} /> Create Tag
         </Button>
       </Box>
-      <EventTagsList tags={tags} setCurrentTag={setCurrentTag} />
+      <EventTagsList tags={filteredTags} setCurrentTag={setCurrentTag} />
       {
         showCreateTag && <CreateTagModal open={showCreateTag} handleClose={handleCloseTagCreation} />
       }
