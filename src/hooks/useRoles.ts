@@ -21,21 +21,19 @@ const useRoles = (): UseRolesResult => {
   useEffect(() => {
     const fetchRoles = async () => {
       setLoading(true);
-      setTimeout(async () => {
-        try {
-          const response = await getRoles();
-          const formattedRoles = response.data.map((item: { id: number; text: string }) => ({
-            id: item.id,
-            text: item.text,
-            description: "IB User",
-          }));
-          setRoles(formattedRoles);
-        } catch (errorMessage) {
-          setError(`Failed to fetch roles, ${errorMessage}`);
-        } finally {
-          setLoading(false);
-        }
-      }, 1000)
+      try {
+        const response = await getRoles();
+        const formattedRoles = response.data.map((item: { id: number; text: string }) => ({
+          id: item.id,
+          text: item.text,
+          description: "IB User",
+        }));
+        setRoles(formattedRoles);
+      } catch (errorMessage) {
+        setError(`Failed to fetch roles, ${errorMessage}`);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchRoles();
