@@ -81,7 +81,7 @@ const Login = () => {
                 }}
                 sx={textFieldStyles}
               />
-              <Button onClick={handleLogin} variant="contained" sx={buttonStyles}>Sign in</Button>
+              <Button onClick={handleLogin} fullWidth variant="contained" sx={buttonStyles}>Sign in</Button>
             </Box>
           </Grid2>
         </Grid2>

@@ -1,15 +1,14 @@
 import React from "react";
-import { Box} from "@mui/material";
-import { Outlet} from "react-router-dom";
+import { Box, SxProps } from "@mui/material";
+import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { WHITE } from "../utils/constants";
 
-
 const AppLayout = () => {
   return (
-    <Box sx={{ display: "flex", bgcolor:WHITE.moderate}}>
-      <Sidebar/>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+    <Box sx={outerBoxStyles}>
+      <Sidebar />
+      <Box component="main" sx={mainBoxStyles}>
         <Outlet />
       </Box>
     </Box>
@@ -17,3 +16,13 @@ const AppLayout = () => {
 };
 
 export default AppLayout;
+
+const outerBoxStyles: SxProps = {
+  display: "flex",
+  bgcolor: WHITE.moderate,
+};
+
+const mainBoxStyles: SxProps = {
+  flexGrow: 1,
+  p: 3,
+};

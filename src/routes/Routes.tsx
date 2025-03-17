@@ -5,7 +5,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import Login from "../pages/Login";
-import AdminDashboard from "../pages/AdminDashboard";
 import AppLayout from "../components/AppLayout";
 import SignUp from "../pages/SignUp";
 import AccessDenied from "../pages/AccessDenied";
@@ -13,7 +12,7 @@ import { getItem } from "../utils/utils";
 import SignOut from "../components/SignOut";
 import PageNotFound from "../pages/PageNotFound";
 import EventTag from "../pages/EventTag";
-import { ACCESSDENIED, ADMINPATH, BASE, EVENTTAGPATH, LOGINPATH, ROLESPATH, SIGNOUTPATH, SIGNUPPATH } from "./routePaths";
+import { ACCESSDENIED, BASE, EVENTTAGPATH, LOGINPATH, ROLESPATH, SIGNOUTPATH, SIGNUPPATH } from "./routePaths";
 import Roles from "../pages/Roles";
 import Users from "../pages/Users";
 
@@ -51,14 +50,6 @@ const router = createBrowserRouter([
         element: (
           <AuthWrapper>
             <Users />
-          </AuthWrapper>
-        ),
-      },
-      {
-        path: ADMINPATH,
-        element: (
-          <AuthWrapper>
-            <AdminDashboard />
           </AuthWrapper>
         ),
       },
