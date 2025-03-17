@@ -1,14 +1,14 @@
 import { baseUrl } from "../../utils/constants";
 import { client } from "../client";
-import { EVENTTAGS } from "../endpoints";
+import { ALLEVENTTAGS, CREATEEVENTTAGS, EVENTTAGS } from "../endpoints";
 
 export const getEventTags = async () => {
-  const response = await client.get(`${baseUrl}${EVENTTAGS}`);
+  const response = await client.get(`${baseUrl}${ALLEVENTTAGS}`);
   return response;
 };
 
 export const addEventTag = async ({name, description}:{name: string, description:string}) => {
-  const response = await client.post(`${baseUrl}${EVENTTAGS}`, { name, description });
+  const response = await client.post(`${baseUrl}${CREATEEVENTTAGS}`, { name, description });
   return response;
 };
 
