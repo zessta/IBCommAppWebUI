@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { getRoles } from "../api/requests/roles";
 
 type Role = {
-  id: number;
-  text: string;
+  roleId: number;
+  roleName: string;
   description: string;
 };
 
@@ -23,9 +23,9 @@ const useRoles = (): UseRolesResult => {
       setLoading(true);
       try {
         const response = await getRoles();
-        const formattedRoles = response.data.map((item: { id: number; text: string }) => ({
-          id: item.id,
-          text: item.text,
+        const formattedRoles = response.data.result.map((item: { roleId: number; roleName: string }) => ({
+          roleId: item.roleId,
+          roleName: item.roleName,
           description: "IB User",
         }));
         setRoles(formattedRoles);

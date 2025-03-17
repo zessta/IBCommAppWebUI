@@ -20,7 +20,7 @@ const Roles = () => {
   }
 
   useEffect(() => {
-    const filtered = roles.filter((tag: any) => tag.text.toLowerCase().includes(searchRole.toLowerCase()));
+    const filtered = roles.filter((role: any) => role.roleName.toLowerCase().includes(searchRole.toLowerCase()));
     setFilteredRoles(filtered);
   }, [searchRole, roles]);
 
