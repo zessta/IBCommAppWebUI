@@ -6,7 +6,7 @@ import SearchIcon from "../assets/SearchIcon.svg";
 import AddIcon from "@mui/icons-material/Add";
 import UsersList from "../components/UsersList";
 import CreateUserModal from "../components/CreateUserModal";
-import { getUsers } from "../api/requests/getUsers";
+import { getUsers } from "../api/requests/users";
 
 const Users = () => {
   const [users, setUsers] = useState<any>([]);
@@ -23,77 +23,77 @@ const Users = () => {
   const fetchUsers = async () => {
     const response = await getUsers();
     if (response.status === 200) {
-      // setUsers(response.data);
-      setUsers([{
-        roleId:1,
-        name:"IG",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"DCP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"SI",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"SP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"CI",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      }])
+      setUsers(response.data);
+      // setUsers([{
+      //   roleId:1,
+      //   name:"IG",
+      //   description:"(Rank 2) Assistant Commissioner of Police",
+      // },
+      // {
+      //   roleId:1,
+      //   name:"ACP",
+      //   description:"(Rank 2) Assistant Commissioner of Police",
+      // },
+      // {
+      //   roleId:1,
+      //   name:"DCP",
+      //   description:"(Rank 2) Assistant Commissioner of Police",
+      // },
+      // {
+      //   roleId:1,
+      //   name:"SI",
+      //   description:"(Rank 2) Assistant Commissioner of Police",
+      // },
+      // {
+      //   roleId:1,
+      //   name:"SP",
+      //   description:"(Rank 2) Assistant Commissioner of Police",
+      // },
+      // {
+      //   roleId:1,
+      //   name:"CI",
+      //   description:"(Rank 2) Assistant Commissioner of Police",
+      // },
+      // {
+      //   roleId:1,
+      //   name:"ACP",
+      //   description:"(Rank 2) Assistant Commissioner of Police",
+      // },
+      // {
+      //   roleId:1,
+      //   name:"ACP",
+      //   description:"(Rank 2) Assistant Commissioner of Police",
+      // },
+      // {
+      //   roleId:1,
+      //   name:"ACP",
+      //   description:"(Rank 2) Assistant Commissioner of Police",
+      // },
+      // {
+      //   roleId:1,
+      //   name:"ACP",
+      //   description:"(Rank 2) Assistant Commissioner of Police",
+      // },
+      // {
+      //   roleId:1,
+      //   name:"ACP",
+      //   description:"(Rank 2) Assistant Commissioner of Police",
+      // },
+      // {
+      //   roleId:1,
+      //   name:"ACP",
+      //   description:"(Rank 2) Assistant Commissioner of Police",
+      // },
+      // {
+      //   roleId:1,
+      //   name:"ACP",
+      //   description:"(Rank 2) Assistant Commissioner of Police",
+      // },
+      // {
+      //   roleId:1,
+      //   name:"ACP",
+      //   description:"(Rank 2) Assistant Commissioner of Police",
+      // }])
     }
   };
 
@@ -103,7 +103,7 @@ const Users = () => {
 
   
     useEffect(() => {
-      const filtered = users.filter((tag:any) => tag.name.toLowerCase().includes(searchUser.toLowerCase()));
+      const filtered = users.filter((user:any) => user.fullName.toLowerCase().includes(searchUser.toLowerCase()));
       setFilteredUsers(filtered);
     }, [searchUser, users]);
 

@@ -25,7 +25,7 @@ const EventTagsList = ({ tags, setCurrentTag }: { tags: any, setCurrentTag: any 
         <Card key={tag.eventTagId} sx={cardStyles}>
           <Box sx={headerBoxStyles}>
             <MenuItem key={tag.eventTagId} value={tag.name} sx={menuItemStyles}>
-              {tag.name}<img src={ActiveIcon} style={{ marginLeft: 8 }} />
+              {"#"+tag.name}<img src={ActiveIcon} style={{ marginLeft: 8 }} />
             </MenuItem>
             <Box sx={iconBoxStyles}>
               <img src={EditIcon} onClick={() => setCurrentTag(tag)} style={{ cursor: "pointer" }} />

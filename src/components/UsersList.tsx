@@ -14,17 +14,17 @@ const UsersList = ({ users, setCurrentEditingUser }: { users: any, setCurrentEdi
                         <Avatar alt="User Avatar" src={Profile} sx={{ width: "150px", height: "150px", mr:2 }} />
                         <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
                             <Grid2 container spacing={3}>
-                                <Grid2 size={5} >
-                                    <Typography variant="body2" sx={{ mb: 1 }}>Name : User 1</Typography>
-                                    <Typography variant="body2" sx={{ mb: 1 }}>Contact no: +91 1234567890</Typography>
-                                    <Typography variant="body2" sx={{ mb: 1 }}>Master: No</Typography>
-                                    <Typography variant="body2" sx={{ mb: 1 }}>DOB: 15-01-1985</Typography>
+                                <Grid2 size={6} >
+                                    <Typography variant="body2" sx={{ mb: 1 }}>Name : {user.fullName}</Typography>
+                                    <Typography variant="body2" sx={{ mb: 1 }}>Contact no : {user.mobileNo}</Typography>
+                                    <Typography variant="body2" sx={{ mb: 1 }}>Email : {user.email}</Typography>
+                                    <Typography variant="body2" sx={{ mb: 1 }}>DOB : {new Date(user.dateOfBirth).toLocaleDateString()}</Typography>
                                 </Grid2>
                                 <Divider orientation="vertical" flexItem sx={{borderColor:WHITE.light}}/>
-                                <Grid2 size={5}>
-                                    <Typography variant="body2" sx={{ mb: 1 }}>PS : User 1</Typography>
-                                    <Typography variant="body2" sx={{ mb: 1 }}>Zone: Unknown</Typography>
-                                    <Typography variant="body2" sx={{ mb: 1 }}>Location: Unknown</Typography>
+                                <Grid2 size={4}>
+                                    <Typography variant="body2" sx={{ mb: 1 }}>PS : {user.policeStation}</Typography>
+                                    <Typography variant="body2" sx={{ mb: 1 }}>Zone : {user.zone}</Typography>
+                                    <Typography variant="body2" sx={{ mb: 1 }}>Location : {user.location}</Typography>
                                 </Grid2>
                             </Grid2>
                         </Box>
@@ -33,7 +33,8 @@ const UsersList = ({ users, setCurrentEditingUser }: { users: any, setCurrentEdi
                         <Grid2 container spacing={3}>
                             <Grid2 container size={8} direction={"row"}>
                                 <Grid2 size={6}>
-                                    <Typography variant="body2" sx={{ mb: 1 }}>Role : ACP</Typography>
+                                    <Typography variant="body2" sx={{ mb: 1 }}>Role : {user.rank
+                                    }</Typography>
                                     <Typography variant="body2" sx={{ mb: 1 }}>Message Sent : 5</Typography>
                                     <Typography variant="body2" sx={{ mb: 1 }}>Group Messages : 0</Typography>
                                     <Typography variant="body2" sx={{ mb: 1 }}>Group Created : 1</Typography>
