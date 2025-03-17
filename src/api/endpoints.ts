@@ -1,6 +1,6 @@
 export const LOGIN = "/auth/login";
-export const ROLES = "/Role/roles";
+export const ALLROLES = "/policies/list/roles";
 export const REGISTER = "/auth/register";
-export const USERSNROLES = "/Role/usersandroles";
+export const ALLUSERS = "/users/list";
 export const REMOVEUSERROLES = "/Role/removerole";
 export const EVENTTAGS = "/tags";

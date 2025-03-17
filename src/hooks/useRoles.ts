@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { getRoles } from "../api/requests/roles";
 
-
 type Role = {
   id: number;
-  role: string;
+  text: string;
+  description: string;
 };
 
 type UseRolesResult = {
@@ -12,10 +12,6 @@ type UseRolesResult = {
   loading: boolean;
   error: string | null;
 };
-
-const capitalize = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
 
 const useRoles = (): UseRolesResult => {
   const [roles, setRoles] = useState<Role[]>([]);
@@ -25,18 +21,21 @@ const useRoles = (): UseRolesResult => {
   useEffect(() => {
     const fetchRoles = async () => {
       setLoading(true);
-      try {
-        const response = await getRoles();
-        const formattedRoles = response.data.map((item: { role: string }, index: number) => ({
-            id: index,
-            role: capitalize(item.role),
+      setTimeout(async () => {
+        try {
+          const response = await getRoles();
+          const formattedRoles = response.data.map((item: { id: number; text: string }) => ({
+            id: item.id,
+            text: item.text,
+            description: "IB User",
           }));
-        setRoles(formattedRoles);
-      } catch (errorMessage) {
-        setError(`Failed to fetch roles, ${errorMessage}`);
-      } finally {
-        setLoading(false);
-      }
+          setRoles(formattedRoles);
+        } catch (errorMessage) {
+          setError(`Failed to fetch roles, ${errorMessage}`);
+        } finally {
+          setLoading(false);
+        }
+      }, 1000)
     };
 
     fetchRoles();

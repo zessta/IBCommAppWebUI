@@ -1,136 +1,36 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
-import { Box, Button, TextField } from "@mui/material";
-import { getRoles } from "../api/requests/roles";
+import { Box, Button, TextField, CircularProgress, SxProps } from "@mui/material";
 import { GRAY, VIOLET, WHITE } from "../utils/constants";
 import SearchIcon from "../assets/SearchIcon.svg";
 import AddIcon from "@mui/icons-material/Add";
 import RolesList from "../components/RolesList";
 import CreateRoleModal from "../components/CreateRoleModal";
+import useRoles from "../hooks/useRoles";
 
 const Roles = () => {
-  const [roles, setRoles] = useState<any>([]);
   const [currentEditingRole, setCurrentEditingRole] = useState<any>(null);
   const [showRoleModal, setShowRoleModal] = useState(false);
-    const [searchRole, setSearchRole] = useState('');
-    const [filteredRoles, setFilteredRoles] = useState([]);
+  const [searchRole, setSearchRole] = useState('');
+  const [filteredRoles, setFilteredRoles] = useState<any[]>([]);
+  const { roles, loading, error } = useRoles();
 
   const handleCloseRoleCreation = () => {
     setShowRoleModal(false);
-    fetchRoles();
   }
 
-  const fetchRoles = async () => {
-    const response = await getRoles();
-    if (response.status === 200) {
-      // setRoles(response.data);
-      setRoles([{
-        roleId:1,
-        name:"IG",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"DCP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"SI",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"SP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"CI",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      },
-      {
-        roleId:1,
-        name:"ACP",
-        description:"(Rank 2) Assistant Commissioner of Police",
-      }])
-    }
-  };
-
   useEffect(() => {
-    fetchRoles();
-  }, []);
-
-  
-    useEffect(() => {
-      const filtered = roles.filter((tag:any) => tag.name.toLowerCase().includes(searchRole.toLowerCase()));
-      setFilteredRoles(filtered);
-    }, [searchRole, roles]);
+    const filtered = roles.filter((tag: any) => tag.text.toLowerCase().includes(searchRole.toLowerCase()));
+    setFilteredRoles(filtered);
+  }, [searchRole, roles]);
 
   return (
-    <Box sx={{ flexGrow: 1, bgcolor: WHITE.main, borderRadius:"18px"}}>
-      <Box
-        display={"flex"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-        mb={2}
-        p={1}
-      >
+    <Box sx={outerBoxStyles}>
+      <Box sx={headerBoxStyles}>
         <TextField
           placeholder="Search Roles"
           onChange={(e) => setSearchRole(e.target.value)}
-          sx={{
-            bgcolor: GRAY.light,
-            "& .MuiOutlinedInput-root": {
-              borderRadius: "11px",
-              "& fieldset": {
-                borderColor: "transparent",
-              },
-            },
-            borderRadius: "11px",
-            flexGrow: 1,
-            mr: 16,
-          }}
+          sx={searchFieldStyles}
           slotProps={{
             input: {
               startAdornment: (
@@ -141,19 +41,19 @@ const Roles = () => {
         />
         <Button
           variant="contained"
-          sx={{
-            bgcolor: VIOLET.dark,
-            height: 40,
-            borderRadius: "11px",
-            p: 1,
-            px: 2,
-          }}
+          sx={addButtonStyles}
           onClick={() => setShowRoleModal(true)}
         >
           <AddIcon sx={{ mr: 1 }} /> Add Role
         </Button>
       </Box>
-      <RolesList roles={filteredRoles} setCurrentEditingRole={setCurrentEditingRole} />
+      {loading ? (
+        <Box sx={loadingBoxStyles}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <RolesList roles={filteredRoles} setCurrentEditingRole={setCurrentEditingRole} />
+      )}
       {
         showRoleModal && <CreateRoleModal open={showRoleModal} handleClose={handleCloseRoleCreation} />
       }
@@ -162,3 +62,45 @@ const Roles = () => {
 };
 
 export default Roles;
+
+const outerBoxStyles: SxProps = {
+  flexGrow: 1,
+  bgcolor: WHITE.main,
+  borderRadius: "18px",
+  height:"100%"
+};
+
+const headerBoxStyles: SxProps = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  mb: 2,
+  p: 1,
+};
+
+const searchFieldStyles: SxProps = {
+  bgcolor: GRAY.light,
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "11px",
+    "& fieldset": {
+      borderColor: "transparent",
+    },
+  },
+  borderRadius: "11px",
+  flexGrow: 1,
+  mr: 16,
+};
+
+const addButtonStyles: SxProps = {
+  bgcolor: VIOLET.dark,
+  height: 40,
+  borderRadius: "11px",
+  p: 1,
+  px: 2,
+};
+
+const loadingBoxStyles: SxProps = {
+  display: "flex",
+  justifyContent: "center",
+  marginTop:"100px"
+};

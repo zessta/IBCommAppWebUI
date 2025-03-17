@@ -37,6 +37,7 @@ const CreateRoleModal = ({ open, handleClose }: { open: boolean, handleClose: ()
             placeholder="Enter Role Title"
             value={roleTitle}
             onChange={(e) => setRoleTitle(e.target.value)}
+            disabled
             sx={textFieldStyles}
           />
           <Typography id="add-role-modal-description" variant="body1" sx={labelStyles}>
@@ -49,13 +50,17 @@ const CreateRoleModal = ({ open, handleClose }: { open: boolean, handleClose: ()
             placeholder="Enter Role Description"
             value={roleDescription}
             onChange={(e) => setRoleDescription(e.target.value)}
+            disabled
             sx={textFieldStyles}
           />
           <Box sx={footerStyles}>
-            <Button variant="contained" sx={buttonStyles} onClick={handleSubmit}>
+            <Button variant="contained" disabled sx={buttonStyles} onClick={handleSubmit}>
               Submit
             </Button>
           </Box>
+          <Typography variant="body2" sx={noteStyles}>
+            Note: This feature is not enabled.
+          </Typography>
         </Box>
       </Modal>
     </Backdrop>
@@ -129,4 +134,10 @@ const buttonStyles: SxProps = {
   bgcolor: VIOLET.dark,
   borderRadius: "9px",
   width: "96px",
+};
+
+const noteStyles: SxProps = {
+  my: 2,
+  textAlign: "center",
+  color: "red",
 };

@@ -1,8 +1,8 @@
 import { baseUrl } from "../../utils/constants";
 import { client } from "../client";
-import { USERSNROLES } from "../endpoints";
+import { ALLUSERS } from "../endpoints";
 
 export const getUsers = async () => {
-  const response = await client.get(`${baseUrl}${USERSNROLES}`);
+  const response = await client.get(`${baseUrl}${ALLUSERS}`);
   return response;
 };
