@@ -1,21 +1,44 @@
-import React, { useEffect } from 'react'
-import { removeItem } from '../utils/utils';
-import { useNavigate } from 'react-router-dom';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import React, { useEffect } from "react";
+import { Box, CircularProgress, Typography, SxProps } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { removeItem } from "../utils/utils";
+import { VIOLET } from "../utils/constants";
 
 const SignOut = () => {
-    const navigate = useNavigate();
-    useEffect(()=>{
-        setTimeout(()=>{
-            removeItem("token");
-            navigate("/login");
-        },1000)
-    })
-    return(
-        <Box sx={{position:"absolute", top:"50%", left:"50%", transform:"translate(-50%, -50%)"}}>
-            <Typography variant="h5" sx={{display:"flex", alignItems:"center", gap:4}}>Signing Out ... <CircularProgress/></Typography>
-        </Box>
-    )
-}
+  const navigate = useNavigate();
 
-export default SignOut
+  useEffect(() => {
+    setTimeout(() => {
+      removeItem("token");
+      navigate("/login");
+    }, 2000);
+  }, [navigate]);
+
+  return (
+    <Box sx={outerBoxStyles}>
+      <CircularProgress size={60} thickness={6} sx={progressStyles} />
+      <Typography variant="h5" sx={textStyles}>
+        Signing out...
+      </Typography>
+    </Box>
+  );
+};
+
+export default SignOut;
+
+const outerBoxStyles: SxProps = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  height: "100vh",
+  bgcolor: VIOLET.light,
+};
+
+const progressStyles: SxProps = {
+  mb: 2,
+};
+
+const textStyles: SxProps = {
+  color: "white",
+};

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import { Modal, Box, Typography, Backdrop, TextField, Button, Grid2, MenuItem } from "@mui/material";
+import { Modal, Box, Typography, Backdrop, TextField, Button, Grid2, MenuItem, SxProps, Theme } from "@mui/material";
 import CloseIcon from "../assets/CloseIcon.svg";
 import { GRAY, VIOLET } from "../utils/constants";
 import useRoles from "../hooks/useRoles";
@@ -29,11 +29,8 @@ const CreateUserModal = ({ open, handleClose }: { open: boolean, handleClose: ()
       dateOfBirth,
     };
 
-    console.log(newUser)
-
     try {
-      const response = await registerUser({newUser});
-      console.log('User registered successfully:', response.data);
+      await registerUser(newUser);
       handleClose();
     } catch (error) {
       console.error('Error registering user:', error);
@@ -52,190 +49,93 @@ const CreateUserModal = ({ open, handleClose }: { open: boolean, handleClose: ()
   };
 
   return (
-    <Backdrop open={open} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backdropFilter: "blur(5px)" }}>
+    <Backdrop open={open} sx={backdropStyles}>
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="add-user-modal-title"
         aria-describedby="add-user-modal-description"
-        sx={{ display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Poppins, sans-serif" }}
+        sx={modalStyles}
       >
-        <Box sx={{ display: "flex", flexDirection: "column", bgcolor: "background.paper", p: 4, borderRadius: "24px", boxShadow: 24, width: "50%", height: "75%" }}>
-          <Box sx={{ flexGrow: 1 }}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
-              <Typography id="add-user-modal-title" variant="h6" component="h2" sx={{
-                fontFamily: "Poppins, sans-serif",
-                fontSize: "30px",
-              }}>
-                Add User
-              </Typography>
-              <img src={CloseIcon} onClick={handleClose} style={{ cursor: "pointer" }} />
-            </Box>
-            <Grid2 container spacing={2} sx={{ justifyContent: "space-evenly" }}>
-              <Grid2 size={5}>
-                <Typography variant="body1" sx={{ fontFamily: "Poppins, sans-serif", fontSize: "20px" }}>
-                  Full Name
-                </Typography>
-                <TextField fullWidth placeholder="Enter Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)}
-                  sx={{
-                    bgcolor: GRAY.light,
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "11px",
-                      fontFamily: "Poppins, sans-serif",
-                      "& fieldset": {
-                        borderColor: "transparent",
-                      },
-                    },
-                    borderRadius: "11px",
-                  }}
-                />
-              </Grid2>
-              <Grid2 size={5}>
-                <Typography variant="body1" sx={{ fontFamily: "Poppins, sans-serif", fontSize: "20px" }}>
-                  Police Station
-                </Typography>
-                <TextField fullWidth placeholder="Enter Police Station" value={policeStation} onChange={(e) => setPoliceStation(e.target.value)}
-                  sx={{
-                    bgcolor: GRAY.light,
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "11px",
-                      fontFamily: "Poppins, sans-serif",
-                      "& fieldset": {
-                        borderColor: "transparent",
-                      },
-                    },
-                    borderRadius: "11px",
-                  }}
-                />
-              </Grid2>
-              <Grid2 size={5}>
-                <Typography variant="body1" sx={{ fontFamily: "Poppins, sans-serif", fontSize: "20px" }}>
-                  Mobile No.
-                </Typography>
-                <TextField fullWidth placeholder="Enter Mobile No." value={mobileNo} onChange={(e) => setMobileNo(e.target.value)}
-                  sx={{
-                    bgcolor: GRAY.light,
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "11px",
-                      fontFamily: "Poppins, sans-serif",
-                      "& fieldset": {
-                        borderColor: "transparent",
-                      },
-                    },
-                    borderRadius: "11px",
-                  }}
-                />
-              </Grid2>
-              <Grid2 size={5}>
-                <Typography variant="body1" sx={{ fontFamily: "Poppins, sans-serif", fontSize: "20px" }}>
-                  Zone
-                </Typography>
-                <TextField fullWidth placeholder="Enter Zone" value={zone} onChange={(e) => setZone(e.target.value)}
-                  sx={{
-                    bgcolor: GRAY.light,
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "11px",
-                      fontFamily: "Poppins, sans-serif",
-                      "& fieldset": {
-                        borderColor: "transparent",
-                      },
-                    },
-                    borderRadius: "11px",
-                  }}
-                />
-              </Grid2>
-              <Grid2 size={5}>
-                <Typography variant="body1" sx={{ fontFamily: "Poppins, sans-serif", fontSize: "20px" }}>
-                  Email
-                </Typography>
-                <TextField fullWidth placeholder="Enter Email" value={email} onChange={(e) => setEmail(e.target.value)}
-                  sx={{
-                    bgcolor: GRAY.light,
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "11px",
-                      fontFamily: "Poppins, sans-serif",
-                      "& fieldset": {
-                        borderColor: "transparent",
-                      },
-                    },
-                    borderRadius: "11px",
-                  }}
-                />
-              </Grid2>
-              <Grid2 size={5}>
-                <Typography variant="body1" sx={{ fontFamily: "Poppins, sans-serif", fontSize: "20px" }}>
-                  Location
-                </Typography>
-                <TextField fullWidth placeholder="Enter Location" value={location} onChange={(e) => setLocation(e.target.value)}
-                  sx={{
-                    bgcolor: GRAY.light,
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "11px",
-                      fontFamily: "Poppins, sans-serif",
-                      "& fieldset": {
-                        borderColor: "transparent",
-                      },
-                    },
-                    borderRadius: "11px",
-                  }}
-                />
-              </Grid2>
-              <Grid2 size={5}>
-                <Typography variant="body1" sx={{ fontFamily: "Poppins, sans-serif", fontSize: "20px" }}>
-                  Rank
-                </Typography>
-                <TextField
-                  select
-                  fullWidth
-                  placeholder="Select Role"
-                  value={rank}
-                  onChange={(e) => setRank(e.target.value)}
-                  sx={{
-                    bgcolor: GRAY.light,
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "11px",
-                      fontFamily: "Poppins, sans-serif",
-                      "& fieldset": {
-                        borderColor: "transparent",
-                      },
-                    },
-                    borderRadius: "11px",
-                  }}
-                >
-                  {roles.map((role) => (
-                    <MenuItem key={role.roleId} value={role.roleName}>
-                      {role.roleName}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid2>
-              <Grid2 size={5}>
-                <Typography variant="body1" sx={{ fontFamily: "Poppins, sans-serif", fontSize: "20px" }}>
-                  Date of Birth
-                </Typography>
-                <TextField
-                  fullWidth
-                  type="date"
-                  value={dateOfBirth ? dateOfBirth.toISOString().split('T')[0] : ''}
-                  onChange={(e) => setDateOfBirth(e.target.value ? new Date(e.target.value) : null)}
-                  sx={{
-                    bgcolor: GRAY.light,
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "11px",
-                      fontFamily: "Poppins, sans-serif",
-                      "& fieldset": {
-                        borderColor: "transparent",
-                      },
-                    },
-                    borderRadius: "11px",
-                  }}
-                />
-              </Grid2>
-            </Grid2>
+        <Box sx={boxStyles}>
+          <Box sx={headerStyles}>
+            <Typography id="add-user-modal-title" variant="h6" component="h2" sx={titleStyles}>
+              Add User
+            </Typography>
+            <img src={CloseIcon} onClick={handleClose} style={{ cursor: "pointer" }} />
           </Box>
+          <Grid2 container spacing={2} sx={{ justifyContent: "space-evenly" }}>
+            <Grid2 size={5}>
+              <Typography variant="body1" sx={labelStyles}>
+                Full Name
+              </Typography>
+              <TextField fullWidth placeholder="Enter Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)} sx={textFieldStyles} />
+            </Grid2>
+            <Grid2 size={5}>
+              <Typography variant="body1" sx={labelStyles}>
+                Police Station
+              </Typography>
+              <TextField fullWidth placeholder="Enter Police Station" value={policeStation} onChange={(e) => setPoliceStation(e.target.value)} sx={textFieldStyles} />
+            </Grid2>
+            <Grid2 size={5}>
+              <Typography variant="body1" sx={labelStyles}>
+                Mobile No.
+              </Typography>
+              <TextField fullWidth placeholder="Enter Mobile No." value={mobileNo} onChange={(e) => setMobileNo(e.target.value)} sx={textFieldStyles} />
+            </Grid2>
+            <Grid2 size={5}>
+              <Typography variant="body1" sx={labelStyles}>
+                Zone
+              </Typography>
+              <TextField fullWidth placeholder="Enter Zone" value={zone} onChange={(e) => setZone(e.target.value)} sx={textFieldStyles} />
+            </Grid2>
+            <Grid2 size={5}>
+              <Typography variant="body1" sx={labelStyles}>
+                Email
+              </Typography>
+              <TextField fullWidth placeholder="Enter Email" value={email} onChange={(e) => setEmail(e.target.value)} sx={textFieldStyles} />
+            </Grid2>
+            <Grid2 size={5}>
+              <Typography variant="body1" sx={labelStyles}>
+                Location
+              </Typography>
+              <TextField fullWidth placeholder="Enter Location" value={location} onChange={(e) => setLocation(e.target.value)} sx={textFieldStyles} />
+            </Grid2>
+            <Grid2 size={5}>
+              <Typography variant="body1" sx={labelStyles}>
+                Rank
+              </Typography>
+              <TextField
+                select
+                fullWidth
+                placeholder="Select Role"
+                value={rank}
+                onChange={(e) => setRank(e.target.value)}
+                sx={textFieldStyles}
+              >
+                {roles.map((role) => (
+                  <MenuItem key={role.roleId} value={role.roleName}>
+                    {role.roleName}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid2>
+            <Grid2 size={5}>
+              <Typography variant="body1" sx={labelStyles}>
+                Date of Birth
+              </Typography>
+              <TextField
+                fullWidth
+                type="date"
+                value={dateOfBirth ? dateOfBirth.toISOString().split('T')[0] : ''}
+                onChange={(e) => setDateOfBirth(e.target.value ? new Date(e.target.value) : null)}
+                sx={textFieldStyles}
+              />
+            </Grid2>
+          </Grid2>
           <Box display={"flex"} justifyContent={"flex-end"} sx={{ height: "47px", mt: 2 }}>
-            <Button variant="outlined" sx={{ color: VIOLET.dark, borderColor: VIOLET.dark, borderRadius: "9px", mr: 2, width: "96px" }} onClick={handleReset}>Reset</Button>
-            <Button variant="contained" sx={{ bgcolor: VIOLET.dark, borderRadius: "9px", width: "96px" }} onClick={handleSubmit}>Submit</Button>
+            <Button variant="outlined" sx={resetButtonStyles} onClick={handleReset}>Reset</Button>
+            <Button variant="contained" sx={submitButtonStyles} onClick={handleSubmit}>Submit</Button>
           </Box>
         </Box>
       </Modal>
@@ -244,3 +144,70 @@ const CreateUserModal = ({ open, handleClose }: { open: boolean, handleClose: ()
 };
 
 export default CreateUserModal;
+
+const backdropStyles: SxProps<Theme> = {
+  zIndex: (theme: Theme) => theme.zIndex.drawer + 1,
+  backdropFilter: "blur(5px)",
+};
+
+const modalStyles: SxProps = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontFamily: "Poppins, sans-serif",
+};
+
+const boxStyles: SxProps = {
+  display: "flex",
+  flexDirection: "column",
+  bgcolor: "background.paper",
+  p: 4,
+  borderRadius: "24px",
+  boxShadow: 24,
+  width: "50%",
+  height: "75%",
+};
+
+const headerStyles: SxProps = {
+  flexGrow: 1,
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  mb: 4,
+};
+
+const titleStyles: SxProps = {
+  fontFamily: "Poppins, sans-serif",
+  fontSize: "30px",
+};
+
+const labelStyles: SxProps = {
+  fontFamily: "Poppins, sans-serif",
+  fontSize: "20px",
+};
+
+const textFieldStyles: SxProps = {
+  bgcolor: GRAY.light,
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "11px",
+    fontFamily: "Poppins, sans-serif",
+    "& fieldset": {
+      borderColor: "transparent",
+    },
+  },
+  borderRadius: "11px",
+};
+
+const resetButtonStyles: SxProps = {
+  color: VIOLET.dark,
+  borderColor: VIOLET.dark,
+  borderRadius: "9px",
+  mr: 2,
+  width: "96px",
+};
+
+const submitButtonStyles: SxProps = {
+  bgcolor: VIOLET.dark,
+  borderRadius: "9px",
+  width: "96px",
+};
