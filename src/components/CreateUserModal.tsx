@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Modal, Box, Typography, Backdrop, TextField, Button, Grid2, MenuItem, SxProps, Theme } from "@mui/material";
 import CloseIcon from "../assets/CloseIcon.svg";
-import { GRAY, VIOLET } from "../utils/constants";
+import { BLUE, GRAY, VIOLET } from "../utils/constants";
 import useRoles from "../hooks/useRoles";
 import { registerUser } from "../api/requests/users";
 
@@ -30,7 +30,7 @@ const CreateUserModal = ({ open, handleClose }: { open: boolean, handleClose: ()
     };
 
     try {
-      await registerUser(newUser);
+      await registerUser({newUser});
       handleClose();
     } catch (error) {
       console.error('Error registering user:', error);
@@ -199,15 +199,15 @@ const textFieldStyles: SxProps = {
 };
 
 const resetButtonStyles: SxProps = {
-  color: VIOLET.dark,
-  borderColor: VIOLET.dark,
+  color: BLUE.dark,
+  borderColor: BLUE.dark,
   borderRadius: "9px",
   mr: 2,
   width: "96px",
 };
 
 const submitButtonStyles: SxProps = {
-  bgcolor: VIOLET.dark,
+  bgcolor: BLUE.dark,
   borderRadius: "9px",
   width: "96px",
 };

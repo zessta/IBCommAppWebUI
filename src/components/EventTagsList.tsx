@@ -1,34 +1,45 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Box, Card, MenuItem, Stack, SxProps } from "@mui/material";
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
-import { GRAY, VIOLET, WHITE } from "../utils/constants";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+import { BLUE, BROWN, GRAY, WHITE } from "../utils/constants";
 import ActiveIcon from "../assets/ActiveIcon.svg";
-import EditIcon from "../assets/EditIcon.svg";
-import PieIcon from "../assets/PieIcon.svg";
+import EditIcon from "../assets/brownTheme/EditIcon.svg";
+import PieIcon from "../assets/brownTheme/PieIcon.svg";
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: VIOLET.light,
+  backgroundColor: BROWN.dark,
   ...theme.typography.body2,
   padding: theme.spacing(1),
-  textAlign: 'center',
+  textAlign: "center",
   color: WHITE.light,
   fontSize: "15.61px",
-  borderRadius: "7.78px"
+  borderRadius: "7.78px",
 }));
 
-const EventTagsList = ({ tags, setCurrentTag }: { tags: any, setCurrentTag: any }) => {
+const EventTagsList = ({
+  tags,
+  setCurrentTag,
+}: {
+  tags: any;
+  setCurrentTag: any;
+}) => {
   return (
     <Box sx={outerBoxStyles}>
       {tags.map((tag: any) => (
         <Card key={tag.eventTagId} sx={cardStyles}>
           <Box sx={headerBoxStyles}>
             <MenuItem key={tag.eventTagId} value={tag.name} sx={menuItemStyles}>
-              {"#"+tag.name}<img src={ActiveIcon} style={{ marginLeft: 8 }} />
+              {"#" + tag.name}
+              <img src={ActiveIcon} style={{ marginLeft: 8 }} />
             </MenuItem>
             <Box sx={iconBoxStyles}>
-              <img src={EditIcon} onClick={() => setCurrentTag(tag)} style={{ cursor: "pointer" }} />
+              <img
+                src={EditIcon}
+                onClick={() => setCurrentTag(tag)}
+                style={{ cursor: "pointer" }}
+              />
               <img src={PieIcon} />
             </Box>
           </Box>
@@ -62,8 +73,8 @@ const outerBoxStyles: SxProps = {
 };
 
 const cardStyles: SxProps = {
-  width: 'calc(33.33% - 40px)',
-  margin: '8px',
+  width: "calc(33.33% - 40px)",
+  margin: "8px",
   minHeight: "190px",
   bgcolor: GRAY.light,
   borderRadius: "25px",
@@ -78,7 +89,7 @@ const headerBoxStyles: SxProps = {
 };
 
 const menuItemStyles: SxProps = {
-  color: VIOLET.dark,
+  color: BLUE.dark,
   fontWeight: 600,
   fontSize: "20px",
   fontFamily: "Poppins, sans-serif",
@@ -86,8 +97,8 @@ const menuItemStyles: SxProps = {
 };
 
 const iconBoxStyles: SxProps = {
-  marginLeft: 'auto',
-  display: 'flex',
+  marginLeft: "auto",
+  display: "flex",
   gap: 1,
   alignItems: "center",
 };

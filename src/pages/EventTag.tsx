@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, SxProps } from "@mui/material";
 import EventTagsList from "../components/EventTagsList";
 import { getEventTags } from "../api/requests/events";
-import { GRAY, VIOLET, WHITE } from "../utils/constants";
+import { BLUE, GRAY, VIOLET, WHITE } from "../utils/constants";
 import SearchIcon from "../assets/SearchIcon.svg";
 import AddIcon from "@mui/icons-material/Add";
 import CreateTagModal from "../components/CreateTagModal";
@@ -12,13 +12,13 @@ const EventTag = () => {
   const [tags, setTags] = useState<any[]>([]);
   const [currentTag, setCurrentTag] = useState<any>(null);
   const [showCreateTag, setShowCreateTag] = useState(false);
-  const [searchTag, setSearchTag] = useState('');
+  const [searchTag, setSearchTag] = useState("");
   const [filteredTags, setFilteredTags] = useState<any[]>([]);
 
   const handleCloseTagCreation = () => {
     setShowCreateTag(false);
     fetchEventTags();
-  }
+  };
 
   const fetchEventTags = async () => {
     const response = await getEventTags();
@@ -32,7 +32,9 @@ const EventTag = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = tags.filter((tag: any) => tag.name.toLowerCase().includes(searchTag.toLowerCase()));
+    const filtered = tags.filter((tag: any) =>
+      tag.name.toLowerCase().includes(searchTag.toLowerCase())
+    );
     setFilteredTags(filtered);
   }, [searchTag, tags]);
 
@@ -60,7 +62,12 @@ const EventTag = () => {
         </Button>
       </Box>
       <EventTagsList tags={filteredTags} setCurrentTag={setCurrentTag} />
-      {showCreateTag && <CreateTagModal open={showCreateTag} handleClose={handleCloseTagCreation} />}
+      {showCreateTag && (
+        <CreateTagModal
+          open={showCreateTag}
+          handleClose={handleCloseTagCreation}
+        />
+      )}
     </Box>
   );
 };
@@ -96,7 +103,7 @@ const searchFieldStyles: SxProps = {
 };
 
 const addButtonStyles: SxProps = {
-  bgcolor: VIOLET.dark,
+  bgcolor: BLUE.dark,
   height: 40,
   borderRadius: "11px",
   p: 1,

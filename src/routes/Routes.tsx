@@ -15,6 +15,7 @@ import EventTag from "../pages/EventTag";
 import { ACCESSDENIED, BASE, EVENTTAGPATH, LOGINPATH, ROLESPATH, SIGNOUTPATH, SIGNUPPATH, USERSPATH } from "./routePaths";
 import Roles from "../pages/Roles";
 import Users from "../pages/Users";
+import Dashboard from "../pages/Dashboard";
 
 const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
   const token = getItem("token");
@@ -49,7 +50,7 @@ const router = createBrowserRouter([
         path: BASE,
         element: (
           <AuthWrapper>
-            <></>
+            <Dashboard/>
           </AuthWrapper>
         ),
       },

@@ -1,10 +1,25 @@
 import React, { useState } from "react";
-import { Modal, Box, Typography, Backdrop, TextField, Button, SxProps, Theme } from "@mui/material";
+import {
+  Modal,
+  Box,
+  Typography,
+  Backdrop,
+  TextField,
+  Button,
+  SxProps,
+  Theme,
+} from "@mui/material";
 import CloseIcon from "../assets/CloseIcon.svg";
-import { GRAY, VIOLET, WHITE, RED } from "../utils/constants";
+import { GRAY, VIOLET, WHITE, RED, BLUE } from "../utils/constants";
 import { addEventTag, addTagStatus } from "../api/requests/events";
 
-const CreateTagModal = ({ open, handleClose }: { open: boolean, handleClose: () => void }) => {
+const CreateTagModal = ({
+  open,
+  handleClose,
+}: {
+  open: boolean;
+  handleClose: () => void;
+}) => {
   const [tagName, setTagName] = useState("");
   const [statusFields, setStatusFields] = useState<string[]>([]);
 
@@ -47,12 +62,25 @@ const CreateTagModal = ({ open, handleClose }: { open: boolean, handleClose: () 
       >
         <Box sx={boxStyles}>
           <Box sx={headerStyles}>
-            <Typography id="create-tag-modal-title" variant="h6" component="h2" sx={titleStyles}>
+            <Typography
+              id="create-tag-modal-title"
+              variant="h6"
+              component="h2"
+              sx={titleStyles}
+            >
               Create Tag
             </Typography>
-            <img src={CloseIcon} onClick={handleClose} style={{ cursor: "pointer" }} />
+            <img
+              src={CloseIcon}
+              onClick={handleClose}
+              style={{ cursor: "pointer" }}
+            />
           </Box>
-          <Typography id="create-tag-modal-description" variant="body1" sx={labelStyles}>
+          <Typography
+            id="create-tag-modal-description"
+            variant="body1"
+            sx={labelStyles}
+          >
             Tag Title
           </Typography>
           <TextField
@@ -63,7 +91,11 @@ const CreateTagModal = ({ open, handleClose }: { open: boolean, handleClose: () 
             slotProps={{
               input: {
                 endAdornment: (
-                  <Button variant="contained" sx={addButtonStyles} onClick={handleAddStatusField}>
+                  <Button
+                    variant="contained"
+                    sx={addButtonStyles}
+                    onClick={handleAddStatusField}
+                  >
                     Add Status
                   </Button>
                 ),
@@ -101,10 +133,18 @@ const CreateTagModal = ({ open, handleClose }: { open: boolean, handleClose: () 
             ))}
           </Box>
           <Box sx={footerStyles}>
-            <Button variant="outlined" sx={resetButtonStyles} onClick={handleReset}>
+            <Button
+              variant="outlined"
+              sx={resetButtonStyles}
+              onClick={handleReset}
+            >
               Reset
             </Button>
-            <Button variant="contained" sx={submitButtonStyles} onClick={handleSubmit}>
+            <Button
+              variant="contained"
+              sx={submitButtonStyles}
+              onClick={handleSubmit}
+            >
               Submit
             </Button>
           </Box>
@@ -170,7 +210,7 @@ const textFieldStyles: SxProps = {
 };
 
 const addButtonStyles: SxProps = {
-  bgcolor: VIOLET.dark,
+  bgcolor: BLUE.dark,
   width: "138px",
   height: "48px",
   borderRadius: "9px",
@@ -203,15 +243,15 @@ const footerStyles: SxProps = {
 };
 
 const resetButtonStyles: SxProps = {
-  color: VIOLET.dark,
-  borderColor: VIOLET.dark,
+  color: BLUE.dark,
+  borderColor: BLUE.dark,
   borderRadius: "9px",
   mr: 2,
   width: "96px",
 };
 
 const submitButtonStyles: SxProps = {
-  bgcolor: VIOLET.dark,
+  bgcolor: BLUE.dark,
   borderRadius: "9px",
   width: "96px",
 };

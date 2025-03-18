@@ -1,10 +1,25 @@
 import React, { useState } from "react";
-import { Modal, Box, Typography, Backdrop, TextField, Button, SxProps, Theme } from "@mui/material";
+import {
+  Modal,
+  Box,
+  Typography,
+  Backdrop,
+  TextField,
+  Button,
+  SxProps,
+  Theme,
+} from "@mui/material";
 import CloseIcon from "../assets/CloseIcon.svg";
-import { GRAY, VIOLET } from "../utils/constants";
+import { BLUE, GRAY, VIOLET } from "../utils/constants";
 import { addRole } from "../api/requests/roles";
 
-const CreateRoleModal = ({ open, handleClose }: { open: boolean, handleClose: () => void }) => {
+const CreateRoleModal = ({
+  open,
+  handleClose,
+}: {
+  open: boolean;
+  handleClose: () => void;
+}) => {
   const [roleTitle, setRoleTitle] = useState("");
   const [roleDescription, setRoleDescription] = useState("");
 
@@ -24,12 +39,25 @@ const CreateRoleModal = ({ open, handleClose }: { open: boolean, handleClose: ()
       >
         <Box sx={boxStyles}>
           <Box sx={headerStyles}>
-            <Typography id="add-role-modal-title" variant="h6" component="h2" sx={titleStyles}>
+            <Typography
+              id="add-role-modal-title"
+              variant="h6"
+              component="h2"
+              sx={titleStyles}
+            >
               Add Role
             </Typography>
-            <img src={CloseIcon} onClick={handleClose} style={{ cursor: "pointer" }} />
+            <img
+              src={CloseIcon}
+              onClick={handleClose}
+              style={{ cursor: "pointer" }}
+            />
           </Box>
-          <Typography id="add-role-modal-description" variant="body1" sx={labelStyles}>
+          <Typography
+            id="add-role-modal-description"
+            variant="body1"
+            sx={labelStyles}
+          >
             Role Title
           </Typography>
           <TextField
@@ -40,7 +68,11 @@ const CreateRoleModal = ({ open, handleClose }: { open: boolean, handleClose: ()
             disabled
             sx={textFieldStyles}
           />
-          <Typography id="add-role-modal-description" variant="body1" sx={labelStyles}>
+          <Typography
+            id="add-role-modal-description"
+            variant="body1"
+            sx={labelStyles}
+          >
             Role Description
           </Typography>
           <TextField
@@ -54,7 +86,12 @@ const CreateRoleModal = ({ open, handleClose }: { open: boolean, handleClose: ()
             sx={textFieldStyles}
           />
           <Box sx={footerStyles}>
-            <Button variant="contained" disabled sx={buttonStyles} onClick={handleSubmit}>
+            <Button
+              variant="contained"
+              disabled
+              sx={buttonStyles}
+              onClick={handleSubmit}
+            >
               Submit
             </Button>
           </Box>
@@ -131,7 +168,7 @@ const footerStyles: SxProps = {
 };
 
 const buttonStyles: SxProps = {
-  bgcolor: VIOLET.dark,
+  bgcolor: BLUE.dark,
   borderRadius: "9px",
   width: "96px",
 };
