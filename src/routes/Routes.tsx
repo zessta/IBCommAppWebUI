@@ -12,7 +12,7 @@ import { getItem } from "../utils/utils";
 import SignOut from "../components/SignOut";
 import PageNotFound from "../pages/PageNotFound";
 import EventTag from "../pages/EventTag";
-import { ACCESSDENIED, BASE, EVENTTAGPATH, LOGINPATH, ROLESPATH, SIGNOUTPATH, SIGNUPPATH } from "./routePaths";
+import { ACCESSDENIED, BASE, EVENTTAGPATH, LOGINPATH, ROLESPATH, SIGNOUTPATH, SIGNUPPATH, USERSPATH } from "./routePaths";
 import Roles from "../pages/Roles";
 import Users from "../pages/Users";
 
@@ -49,7 +49,7 @@ const router = createBrowserRouter([
         path: BASE,
         element: (
           <AuthWrapper>
-            <Users />
+            <></>
           </AuthWrapper>
         ),
       },
@@ -66,6 +66,14 @@ const router = createBrowserRouter([
         element: (
           <AuthWrapper>
             <Roles />
+          </AuthWrapper>
+        ),
+      },
+      {
+        path: USERSPATH,
+        element: (
+          <AuthWrapper>
+            <Users />
           </AuthWrapper>
         ),
       },

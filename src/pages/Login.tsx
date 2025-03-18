@@ -157,6 +157,7 @@ const buttonStyles: SxProps = {
   height: "69.70000457763672px",
   borderRadius: "13.33px",
   fontSize: "27.2px",
+    textTransform:"none"
 };
 
 export const BoxContainer: SxProps = {

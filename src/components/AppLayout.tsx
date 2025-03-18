@@ -20,9 +20,12 @@ export default AppLayout;
 const outerBoxStyles: SxProps = {
   display: "flex",
   bgcolor: WHITE.moderate,
+  height:"100%",
+  p:2,
+  boxSizing:"border-box"
 };
 
 const mainBoxStyles: SxProps = {
   flexGrow: 1,
-  p: 3,
+  pl: 2,
 };

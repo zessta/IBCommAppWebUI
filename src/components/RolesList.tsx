@@ -13,7 +13,7 @@ const RolesList = ({ roles, setCurrentEditingRole }: { roles: any, setCurrentEdi
         <Card key={role.id} sx={cardStyles}>
           <Box sx={headerBoxStyles}>
             <MenuItem key={role.roleId} value={role.name} sx={menuItemStyles}>
-              {role.text}<img src={ActiveIcon} style={{ marginLeft: 8 }} />
+              {role.roleName}<img src={ActiveIcon} style={{ marginLeft: 8 }} />
             </MenuItem>
             <Box sx={iconBoxStyles}>
               <img src={EditIcon} onClick={() => setCurrentEditingRole(role)} style={{ cursor: "pointer" }} />

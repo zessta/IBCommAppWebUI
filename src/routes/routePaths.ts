@@ -1,8 +1,11 @@
 export const BASE = "/";
 export const LOGINPATH = "/login";
-export const SIGNUPPATH = "/signup/:encodedString";
+export const SIGNUPPATH = "/resetPassword";
 export const SIGNOUTPATH = "/signout";
 export const EVENTTAGPATH = "eventTag";
 export const ROLESPATH = "roles";
+export const USERSPATH = "users";
+export const EMAILCONFIRMATION = "/auth/emailconfirmed";
+export const CREATEPASSWORD = "/auth/createpassword";
 export const ACCESSDENIED = "/accessDenied";
 export const NOTFOUND = "*";
