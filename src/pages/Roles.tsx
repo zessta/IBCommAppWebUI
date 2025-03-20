@@ -57,7 +57,7 @@ const Roles = () => {
       </Box>
       {loading ? (
         <Box sx={loadingBoxStyles}>
-          <CircularProgress />
+          <CircularProgress  size={60} thickness={6} />
         </Box>
       ) : (
         <RolesList

@@ -1,45 +1,66 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
-import { Box, TextField, SxProps, Card, Typography } from "@mui/material";
-import { BROWN, GRAY, VIOLET, WHITE } from "../utils/constants";
-import SearchIcon from "../assets/SearchIcon.svg";
+import React, { useEffect, useState } from "react";
+import { Box, SxProps, Card, Typography, CircularProgress } from "@mui/material";
+import { BROWN, GRAY, WHITE } from "../utils/constants";
 import RecentEventTags from "../components/RecentEventTags";
+import { getTagDataForDashboard } from "../api/requests/dashboard";
 
 
 const Dashboard = () => {
-  const [searchRole, setSearchRole] = useState('');
+  const [dashboardData, setDashboardData] = useState<any>({
+    numberOfEventTags:0,
+    numberOfUsers:0,
+    numberOfGroups:0,
+    eventTagData:[]
+  });
+  const [loader, setLoader] = useState(false);
+
+  useEffect(()=>{
+    setLoader(true);
+    const fetchDashboardData = async () =>{
+      try{
+        const response = await getTagDataForDashboard();
+        if(response.status === 200){
+          setDashboardData(response.data);
+        }
+      }
+      catch(error){
+        console.log(error);
+      }
+      finally{
+        setLoader(false);
+      }
+    }
+    setTimeout(() => {
+      fetchDashboardData();
+    }, 500)
+  },[]);
+
+  if(loader){
+    return (
+      <Box sx={{height:"100%", display:"flex", alignItems:"center", justifyContent:"center"}}>
+        <CircularProgress size={60} thickness={6} />
+      </Box>
+    )
+  }
 
   return (
     <Box sx={outerBoxStyles}>
-      {/* <Box sx={headerBoxStyles}>
-        <TextField
-          placeholder="Search User"
-          onChange={(e) => setSearchRole(e.target.value)}
-          sx={searchFieldStyles}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <img src={SearchIcon} style={{ marginRight: "12px" }} />
-              ),
-            },
-          }}
-        />
-      </Box> */}
       <Box sx={cardBoxStyles}>
           <Card sx={cardStyles}>
-            <Typography sx={cardCountStyles}>07</Typography>
+            <Typography sx={cardCountStyles}>{dashboardData.numberOfEventTags}</Typography>
             <Typography sx={cardTextStyles}>Tags</Typography>
           </Card>
           <Card sx={cardStyles}>
-            <Typography sx={cardCountStyles}>04</Typography>
+            <Typography sx={cardCountStyles}>{dashboardData.numberOfUsers}</Typography>
             <Typography sx={cardTextStyles}>Roles</Typography>
           </Card>
           <Card sx={cardStyles}>
-            <Typography sx={cardCountStyles}>20</Typography>
+            <Typography sx={cardCountStyles}>{dashboardData.numberOfGroups}</Typography>
             <Typography sx={cardTextStyles}>Users</Typography>
           </Card>
       </Box>
-      <RecentEventTags/>
+      <RecentEventTags eventTagData = {dashboardData.eventTagData}/>
     </Box>
   );
 };

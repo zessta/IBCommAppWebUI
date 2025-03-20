@@ -7,7 +7,7 @@ import {
   CircularProgress,
   SxProps,
 } from "@mui/material";
-import { BLUE, GRAY, VIOLET, WHITE } from "../utils/constants";
+import { BLUE, GRAY, WHITE } from "../utils/constants";
 import SearchIcon from "../assets/SearchIcon.svg";
 import AddIcon from "@mui/icons-material/Add";
 import UsersList from "../components/UsersList";
@@ -15,7 +15,6 @@ import CreateUserModal from "../components/CreateUserModal";
 import { getUsers } from "../api/requests/users";
 
 const Users = () => {
-  const [currentEditingUser, setCurrentEditingUser] = useState<any>(null);
   const [showUserModal, setShowUserModal] = useState(false);
   const [searchUser, setSearchUser] = useState("");
   const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
@@ -29,14 +28,16 @@ const Users = () => {
 
   const fetchUsers = async () => {
     setLoading(true);
-    try {
-      const response = await getUsers();
-      setUsers(response.data);
-    } catch (error) {
-      console.error("Failed to fetch users:", error);
-    } finally {
-      setLoading(false);
-    }
+    setTimeout(async () => {
+      try {
+        const response = await getUsers();
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+      } finally {
+        setLoading(false);
+      }
+    },500)
   };
 
   useEffect(() => {
@@ -75,12 +76,11 @@ const Users = () => {
       </Box>
       {loading ? (
         <Box sx={loadingBoxStyles}>
-          <CircularProgress />
+          <CircularProgress  size={60} thickness={6} />
         </Box>
       ) : (
         <UsersList
           users={filteredUsers}
-          setCurrentEditingUser={setCurrentEditingUser}
         />
       )}
       {showUserModal && (

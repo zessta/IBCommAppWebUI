@@ -15,10 +15,8 @@ import EditOutlinedIcon from "../assets/brownTheme/EditOutlinedIcon.svg";
 
 const UsersList = ({
   users,
-  setCurrentEditingUser,
 }: {
   users: any;
-  setCurrentEditingUser: any;
 }) => {
   return (
     <Box sx={outerBoxStyles}>
@@ -88,7 +86,6 @@ const UsersList = ({
                   src={EditOutlinedIcon}
                   style={editIconStyles}
                   alt="Edit Icon"
-                  onClick={() => setCurrentEditingUser(user)}
                 />
               </Grid2>
             </Grid2>
