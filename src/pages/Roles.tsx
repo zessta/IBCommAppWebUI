@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
-import { Box, Button, TextField, CircularProgress, SxProps } from "@mui/material";
-import { GRAY, VIOLET, WHITE } from "../utils/constants";
+import {
+  Box,
+  Button,
+  TextField,
+  CircularProgress,
+  SxProps,
+} from "@mui/material";
+import { BLUE, GRAY, VIOLET, WHITE } from "../utils/constants";
 import SearchIcon from "../assets/SearchIcon.svg";
 import AddIcon from "@mui/icons-material/Add";
 import RolesList from "../components/RolesList";
@@ -11,16 +17,18 @@ import useRoles from "../hooks/useRoles";
 const Roles = () => {
   const [currentEditingRole, setCurrentEditingRole] = useState<any>(null);
   const [showRoleModal, setShowRoleModal] = useState(false);
-  const [searchRole, setSearchRole] = useState('');
+  const [searchRole, setSearchRole] = useState("");
   const [filteredRoles, setFilteredRoles] = useState<any[]>([]);
   const { roles, loading, error } = useRoles();
 
   const handleCloseRoleCreation = () => {
     setShowRoleModal(false);
-  }
+  };
 
   useEffect(() => {
-    const filtered = roles.filter((role: any) => role.roleName.toLowerCase().includes(searchRole.toLowerCase()));
+    const filtered = roles.filter((role: any) =>
+      role.roleName.toLowerCase().includes(searchRole.toLowerCase())
+    );
     setFilteredRoles(filtered);
   }, [searchRole, roles]);
 
@@ -49,14 +57,20 @@ const Roles = () => {
       </Box>
       {loading ? (
         <Box sx={loadingBoxStyles}>
-          <CircularProgress />
+          <CircularProgress  size={60} thickness={6} />
         </Box>
       ) : (
-        <RolesList roles={filteredRoles} setCurrentEditingRole={setCurrentEditingRole} />
+        <RolesList
+          roles={filteredRoles}
+          setCurrentEditingRole={setCurrentEditingRole}
+        />
       )}
-      {
-        showRoleModal && <CreateRoleModal open={showRoleModal} handleClose={handleCloseRoleCreation} />
-      }
+      {showRoleModal && (
+        <CreateRoleModal
+          open={showRoleModal}
+          handleClose={handleCloseRoleCreation}
+        />
+      )}
     </Box>
   );
 };
@@ -67,7 +81,7 @@ const outerBoxStyles: SxProps = {
   flexGrow: 1,
   bgcolor: WHITE.main,
   borderRadius: "18px",
-  height:"100%"
+  height: "100%",
 };
 
 const headerBoxStyles: SxProps = {
@@ -92,7 +106,7 @@ const searchFieldStyles: SxProps = {
 };
 
 const addButtonStyles: SxProps = {
-  bgcolor: VIOLET.dark,
+  bgcolor: BLUE.dark,
   height: 40,
   borderRadius: "11px",
   p: 1,
@@ -102,5 +116,5 @@ const addButtonStyles: SxProps = {
 const loadingBoxStyles: SxProps = {
   display: "flex",
   justifyContent: "center",
-  marginTop:"100px"
+  marginTop: "100px",
 };

@@ -6,3 +6,4 @@ export const REMOVEUSERROLES = "/Role/removerole";
 export const EVENTTAGS = "/tags";
 export const ALLEVENTTAGS = EVENTTAGS + "/list";
 export const CREATEEVENTTAGS = EVENTTAGS + "/create";
+export const GETDASHBOARDTAGDATA = "/dashboard/tagdata";

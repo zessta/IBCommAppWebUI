@@ -1,9 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Container, TextField, Button, Typography, Box, CircularProgress, SxProps, Grid2 } from "@mui/material";
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Box,
+  CircularProgress,
+  SxProps,
+  Grid2,
+} from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { GRAY, VIOLET, WHITE } from "../utils/constants";
+import { BLUE, GRAY, WHITE } from "../utils/constants";
 import { createPassword, isUserPasswordCreated } from "../api/requests/users";
-import AppLogoViolet from "../assets/AppLogoViolet.svg"
+import AppLogoViolet from "../assets/brownTheme/AppLogo.svg";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -13,14 +22,16 @@ const SignUp = () => {
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
   const [searchParams] = useSearchParams();
   const userKey = searchParams.get("token");
-  const [errors, setErrors] = useState({ newPassword: "", confirmPassword: "" });
+  const [errors, setErrors] = useState({
+    newPassword: "",
+    confirmPassword: "",
+  });
   const [statusText, setStatusText] = useState("");
-
 
   useEffect(() => {
     setTimeout(async () => {
       const userStatus = await isUserPasswordCreated({ token: userKey ?? "" });
-      if(userStatus.data){
+      if (userStatus.data) {
         setStatusText("Password Already Created, Redirecting to Sign in...");
         setIsPasswordCreated(userStatus.data);
       }
@@ -30,10 +41,7 @@ const SignUp = () => {
 
   if (loader) {
     return (
-      <Container
-        maxWidth="sm"
-        sx={loaderContainerStyles}
-      >
+      <Container maxWidth="sm" sx={loaderContainerStyles}>
         <CircularProgress size={60} thickness={6} />
       </Container>
     );
@@ -43,12 +51,13 @@ const SignUp = () => {
     setTimeout(() => navigate("/login"), 2000);
     return (
       <Box sx={redirectionBoxStyles}>
-        <Typography variant="h5" color="green">{statusText}</Typography>
+        <Typography variant="h5" color="green">
+          {statusText}
+        </Typography>
       </Box>
     );
   };
 
-  
   const validatePasswords = () => {
     const newPassword = newPasswordRef.current?.value;
     const confirmPassword = confirmPasswordRef.current?.value;
@@ -69,71 +78,89 @@ const SignUp = () => {
     return valid;
   };
   const handlePasswordCreation = async () => {
-    if(validatePasswords()){
-      const response = await createPassword({token:userKey!, newPassword:newPasswordRef.current?.value??""});
-      if(response.status === 200){
-        setStatusText("Password Created Successfully, You will be re-directed to Sign in...");
+    if (validatePasswords()) {
+      const response = await createPassword({
+        token: userKey!,
+        newPassword: newPasswordRef.current?.value ?? "",
+      });
+      if (response.status === 200) {
+        setStatusText(
+          "Password Created Successfully, You will be re-directed to Sign in..."
+        );
         setIsPasswordCreated(true);
       }
     }
   };
 
-  if(isPasswordCreated){
-    return(
-      <RedirecToLogin/>
-    )
+  if (isPasswordCreated) {
+    return <RedirecToLogin />;
   }
 
   return (
-      <Box sx={outerBoxStyles}>
+    <Box sx={outerBoxStyles}>
       <Box sx={innerBoxStyles}>
         <Grid2 container>
           <Grid2 size={6} sx={leftGridStyles}>
             <Box sx={leftBoxStyles}>
               <img src={AppLogoViolet} alt="App Logo" />
-              <Typography variant="h5" sx={titleStyles}>Sign up</Typography>
-              <Typography variant="body1" sx={subtitleStyles}>Sign up to continue to Chat.</Typography>
+              <Typography variant="h5" sx={titleStyles}>
+                Sign up
+              </Typography>
+              <Typography variant="body1" sx={subtitleStyles}>
+                Sign up to continue to Chat.
+              </Typography>
             </Box>
           </Grid2>
           <Grid2 size={6}>
             <Box sx={BoxContainer}>
-              <Typography variant="body1" sx={{ ...labelStyles, mt: 4 }}>Create Your Password</Typography>
+              <Typography variant="body1" sx={{ ...labelStyles, mt: 4 }}>
+                Create Your Password
+              </Typography>
               <TextField
                 fullWidth
                 placeholder="Enter your new password"
                 inputRef={newPasswordRef}
-                type={'password'}
+                type={"password"}
                 sx={textFieldStyles}
                 error={!!errors.newPassword}
                 helperText={errors.newPassword}
               />
-              <Typography variant="body1" sx={{ ...labelStyles, mt: 4 }}>Re-enter Your Password</Typography>
+              <Typography variant="body1" sx={{ ...labelStyles, mt: 4 }}>
+                Re-enter Your Password
+              </Typography>
               <TextField
                 fullWidth
                 placeholder="Re-enter new password"
                 inputRef={confirmPasswordRef}
-                type={'password'}
+                type={"password"}
                 sx={textFieldStyles}
                 error={!!errors.confirmPassword}
                 helperText={errors.confirmPassword}
               />
-              <Button onClick={handlePasswordCreation} fullWidth variant="contained" sx={buttonStyles}>Create Password</Button>
+              <Button
+                onClick={handlePasswordCreation}
+                fullWidth
+                variant="contained"
+                sx={buttonStyles}
+              >
+                Create Password
+              </Button>
             </Box>
           </Grid2>
         </Grid2>
       </Box>
     </Box>
-    )
-    }  
-    
+  );
+};
+
 export default SignUp;
 
-const redirectionBoxStyles:SxProps = {
-  height:"100vh",
-  width:"100vw",
-  display:"flex",
-  alignItems:"center",
-  justifyContent:"center"
+const redirectionBoxStyles: SxProps = {
+  height: "100vh",
+  width: "100vw",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 };
 
 const loaderContainerStyles: SxProps = {
@@ -142,7 +169,6 @@ const loaderContainerStyles: SxProps = {
   justifyContent: "center",
   height: "inherit",
 };
-
 
 const outerBoxStyles: SxProps = {
   display: "flex",
@@ -204,12 +230,12 @@ const textFieldStyles: SxProps = {
 };
 
 const buttonStyles: SxProps = {
-  bgcolor: VIOLET.dark,
+  bgcolor: BLUE.dark,
   mt: 6,
   height: "69.70000457763672px",
   borderRadius: "13.33px",
   fontSize: "27.2px",
-  textTransform:"none"
+  textTransform: "none",
 };
 
 export const BoxContainer: SxProps = {

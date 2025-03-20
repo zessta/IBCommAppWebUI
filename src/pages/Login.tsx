@@ -1,10 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { TextField, Button, Typography, Box, SxProps, CircularProgress, Grid2, InputAdornment, IconButton } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Typography,
+  Box,
+  SxProps,
+  Grid2,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { signInApi } from "../api/requests/signIn";
 import { getItem, setItem } from "../utils/utils";
-import { GRAY, VIOLET, WHITE } from "../utils/constants";
-import AppLogoViolet from "../assets/AppLogoViolet.svg";
+import { BLUE, GRAY, WHITE } from "../utils/constants";
+import AppLogoViolet from "../assets/brownTheme/AppLogo.svg";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Login = () => {
@@ -25,7 +34,10 @@ const Login = () => {
     }
 
     setTimeout(async () => {
-      const response = await signInApi({ email: emailRef.current?.value || '', password: passwordRef.current?.value || '' });
+      const response = await signInApi({
+        email: emailRef.current?.value || "",
+        password: passwordRef.current?.value || "",
+      });
       if (response?.status === 200) {
         setItem({ key: "token", value: response?.data?.token });
         navigate("/");
@@ -50,22 +62,35 @@ const Login = () => {
           <Grid2 size={6} sx={leftGridStyles}>
             <Box sx={leftBoxStyles}>
               <img src={AppLogoViolet} alt="App Logo" />
-              <Typography variant="h5" sx={titleStyles}>Sign in</Typography>
-              <Typography variant="body1" sx={subtitleStyles}>Sign in to continue to Chat.</Typography>
+              <Typography variant="h5" sx={titleStyles}>
+                Sign in
+              </Typography>
+              <Typography variant="body1" sx={subtitleStyles}>
+                Sign in to continue to Chat.
+              </Typography>
             </Box>
           </Grid2>
           <Grid2 size={6}>
             <Box sx={BoxContainer}>
-              <Typography variant="body1" sx={labelStyles}>Email id</Typography>
-              <TextField fullWidth placeholder="Enter your email id" inputRef={emailRef} sx={textFieldStyles} />
-              <Typography variant="body1" sx={{ ...labelStyles, mt: 4 }}>Password</Typography>
+              <Typography variant="body1" sx={labelStyles}>
+                Email id
+              </Typography>
+              <TextField
+                fullWidth
+                placeholder="Enter your email id"
+                inputRef={emailRef}
+                sx={textFieldStyles}
+              />
+              <Typography variant="body1" sx={{ ...labelStyles, mt: 4 }}>
+                Password
+              </Typography>
               <TextField
                 fullWidth
                 placeholder="Enter your password"
                 inputRef={passwordRef}
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 slotProps={{
-                  input:{
+                  input: {
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
@@ -77,11 +102,18 @@ const Login = () => {
                         </IconButton>
                       </InputAdornment>
                     ),
-                  }
+                  },
                 }}
                 sx={textFieldStyles}
               />
-              <Button onClick={handleLogin} fullWidth variant="contained" sx={buttonStyles}>Sign in</Button>
+              <Button
+                onClick={handleLogin}
+                fullWidth
+                variant="contained"
+                sx={buttonStyles}
+              >
+                Sign in
+              </Button>
             </Box>
           </Grid2>
         </Grid2>
@@ -152,12 +184,12 @@ const textFieldStyles: SxProps = {
 };
 
 const buttonStyles: SxProps = {
-  bgcolor: VIOLET.dark,
+  bgcolor: BLUE.dark,
   mt: 6,
   height: "69.70000457763672px",
   borderRadius: "13.33px",
   fontSize: "27.2px",
-    textTransform:"none"
+  textTransform: "none",
 };
 
 export const BoxContainer: SxProps = {

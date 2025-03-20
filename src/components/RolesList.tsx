@@ -1,22 +1,33 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Box, Card, MenuItem, Typography, SxProps } from "@mui/material";
-import { GRAY, VIOLET, WHITE } from "../utils/constants";
+import { BLUE, GRAY, WHITE } from "../utils/constants";
 import ActiveIcon from "../assets/ActiveIcon.svg";
-import EditIcon from "../assets/EditIcon.svg";
-import MenuDotsIcon from "../assets/MenuDotsIcon.svg";
+import EditIcon from "../assets/brownTheme/EditIcon.svg";
+import MenuDotsIcon from "../assets/brownTheme/MenuDotsIcon.svg";
 
-const RolesList = ({ roles, setCurrentEditingRole }: { roles: any, setCurrentEditingRole: any }) => {
+const RolesList = ({
+  roles,
+  setCurrentEditingRole,
+}: {
+  roles: any;
+  setCurrentEditingRole: any;
+}) => {
   return (
     <Box sx={outerBoxStyles}>
       {roles.map((role: any) => (
         <Card key={role.id} sx={cardStyles}>
           <Box sx={headerBoxStyles}>
             <MenuItem key={role.roleId} value={role.name} sx={menuItemStyles}>
-              {role.roleName}<img src={ActiveIcon} style={{ marginLeft: 8 }} />
+              {role.roleName}
+              <img src={ActiveIcon} style={{ marginLeft: 8 }} />
             </MenuItem>
             <Box sx={iconBoxStyles}>
-              <img src={EditIcon} onClick={() => setCurrentEditingRole(role)} style={{ cursor: "pointer" }} />
+              <img
+                src={EditIcon}
+                onClick={() => setCurrentEditingRole(role)}
+                style={{ cursor: "pointer" }}
+              />
               <img src={MenuDotsIcon} />
             </Box>
           </Box>
@@ -46,8 +57,8 @@ const outerBoxStyles: SxProps = {
 };
 
 const cardStyles: SxProps = {
-  width: 'calc(33.33% - 40px)',
-  margin: '8px',
+  width: "calc(33.33% - 40px)",
+  margin: "8px",
   minHeight: "139px",
   bgcolor: GRAY.light,
   borderRadius: "25px",
@@ -62,7 +73,7 @@ const headerBoxStyles: SxProps = {
 };
 
 const menuItemStyles: SxProps = {
-  color: VIOLET.dark,
+  color: BLUE.dark,
   fontWeight: 600,
   fontSize: "20px",
   p: "8px",
@@ -71,8 +82,8 @@ const menuItemStyles: SxProps = {
 };
 
 const iconBoxStyles: SxProps = {
-  marginLeft: 'auto',
-  display: 'flex',
+  marginLeft: "auto",
+  display: "flex",
   gap: 1,
   alignItems: "center",
 };

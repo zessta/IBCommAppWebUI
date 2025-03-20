@@ -1,13 +1,24 @@
 import React, { useState } from "react";
-import { Drawer, Box, List, ListItem, ListItemText, ListItemIcon, ListItemButton, Button, SxProps } from "@mui/material";
+import {
+  Drawer,
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  ListItemButton,
+  Button,
+  SxProps,
+} from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import AppLogo from "../assets/AppLogoWhite.svg";
 import DashboardIcon from "../assets/DashboardIcon.svg";
 import TagsIcon from "../assets/TagsIcon.svg";
 import RolesIcon from "../assets/RolesIcon.svg";
 import UsersIcon from "../assets/UsersIcon.svg";
-import { VIOLET } from "../utils/constants";
+import { BLUE, BROWN } from "../utils/constants";
 import { BASE, EVENTTAGPATH, ROLESPATH, USERSPATH } from "../routes/routePaths";
+import LogoutIcon from "../assets/LogoutIcon.svg"
 
 const menuItems = [
   { id: 1, to: BASE, text: "Dashboard", icon: <img src={DashboardIcon} /> },
@@ -25,11 +36,7 @@ const Sidebar = () => {
   };
 
   return (
-    <Drawer
-      variant="permanent"
-      anchor="left"
-      sx={drawerStyles}
-    >
+    <Drawer variant="permanent" anchor="left" sx={drawerStyles}>
       <Box sx={logoBoxStyles}>
         <img src={AppLogo} alt="App Logo" style={logoStyles} />
       </Box>
@@ -47,7 +54,16 @@ const Sidebar = () => {
           </ListItem>
         ))}
       </List>
-      <Button variant="contained" sx={logoutButtonStyles} onClick={() => { navigate("/signout") }}>Logout</Button>
+      <Button
+        variant="contained"
+        sx={logoutButtonStyles}
+        onClick={() => {
+          navigate("/signout");
+        }}
+      >
+        <img src={LogoutIcon}/>
+        Logout
+      </Button>
     </Drawer>
   );
 };
@@ -57,7 +73,7 @@ export default Sidebar;
 const drawerStyles: SxProps = {
   "& .MuiDrawer-paper": {
     width: 200,
-    bgcolor: VIOLET.dark,
+    bgcolor: BLUE.dark,
     height: "100%",
     position: "relative",
     borderRadius: "24px",
@@ -88,7 +104,7 @@ const listItemStyles: SxProps = {
 
 const listItemButtonStyles: SxProps = {
   "&.Mui-selected": {
-    bgcolor: VIOLET.light,
+    bgcolor: BROWN.dark,
     color: "#fff",
     "& .MuiListItemIcon-root": { color: "#fff" },
   },
@@ -105,5 +121,7 @@ const listItemTextStyles: SxProps = {
 const logoutButtonStyles: SxProps = {
   m: 2,
   mt: "auto",
-  bgcolor: VIOLET.light,
+  bgcolor: BLUE.dark,
+  textTransform:"none",
+  gap:2
 };

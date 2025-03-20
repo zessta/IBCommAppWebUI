@@ -20,3 +20,13 @@ export const WHITE = {
 export const RED = {
   main: "#FF0E0E",
 };
+
+export const BLUE = {
+  dark:"#234B89"
+}
+
+export const BROWN = {
+  dark:"#C9AB71",
+  light:"#C9AB7159",
+  moderate: "#A08E67"
+}
