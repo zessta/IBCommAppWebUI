@@ -1,7 +1,7 @@
 import { CREATEPASSWORD, EMAILCONFIRMATION } from "../../routes/routePaths";
 import { baseUrl } from "../../utils/constants";
 import { client } from "../client";
-import { ALLUSERS, REGISTER } from "../endpoints";
+import { ALLUSERS, GETUSERMETRICS, GETUSERSFORROLE, REGISTER } from "../endpoints";
 
 export const getUsers = async () => {
   const response = await client.get(`${baseUrl}${ALLUSERS}`);
@@ -23,3 +23,13 @@ export const createPassword = async ({token, newPassword}:{token:string, newPass
   const response = await client.post(`${baseUrl}${CREATEPASSWORD}?Token=${token}&NewPassword=${newPassword}`);
   return response;
 }
+
+export const getUserMetrics = async () => {
+  const response = await client.get(`${baseUrl}${GETUSERMETRICS}`);
+  return response;
+};
+
+export const getUserForRole = async (rank:string) => {
+  const response = await client.get(`${baseUrl}/policies/${rank}${GETUSERSFORROLE}`);
+  return response;
+};
