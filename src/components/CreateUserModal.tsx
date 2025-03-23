@@ -1,51 +1,78 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import { Modal, Box, Typography, Backdrop, TextField, Button, Grid2, MenuItem, SxProps, Theme } from "@mui/material";
+import {
+  Modal,
+  Box,
+  Typography,
+  Backdrop,
+  TextField,
+  Button,
+  Grid2,
+  MenuItem,
+  SxProps,
+  Theme,
+} from "@mui/material";
 import CloseIcon from "../assets/CloseIcon.svg";
-import { BLUE, GRAY, VIOLET } from "../utils/constants";
+import { BLUE, GRAY } from "../utils/constants";
 import useRoles from "../hooks/useRoles";
 import { registerUser } from "../api/requests/users";
 
-const CreateUserModal = ({ open, handleClose }: { open: boolean, handleClose: () => void }) => {
-  const [fullName, setFullName] = useState("");
-  const [policeStation, setPoliceStation] = useState("");
-  const [mobileNo, setMobileNo] = useState("");
-  const [zone, setZone] = useState("");
-  const [email, setEmail] = useState("");
-  const [location, setLocation] = useState("");
-  const [rank, setRank] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState<Date | null>(null);
+interface CreateUserModalProps {
+  open: boolean;
+  handleClose: () => void;
+}
+
+interface NewUser {
+  fullName: string;
+  policeStation: string;
+  mobileNo: string;
+  zone: string;
+  email: string;
+  location: string;
+  rank: string;
+  dateOfBirth: Date | null;
+}
+
+const CreateUserModal: React.FC<CreateUserModalProps> = ({
+  open,
+  handleClose,
+}) => {
+  const [newUser, setNewUser] = useState<NewUser>({
+    fullName: "",
+    policeStation: "",
+    mobileNo: "",
+    zone: "",
+    email: "",
+    location: "",
+    rank: "",
+    dateOfBirth: null,
+  });
   const { roles, loading, error } = useRoles();
 
-  const handleSubmit = async () => {
-    const newUser:any = {
-      fullName,
-      policeStation,
-      mobileNo,
-      zone,
-      email,
-      location,
-      rank,
-      dateOfBirth,
-    };
+  const handleChange = (field: keyof NewUser, value: string | Date | null) => {
+    setNewUser((prev) => ({ ...prev, [field]: value }));
+  };
 
+  const handleSubmit = async () => {
     try {
-      await registerUser({newUser});
+      await registerUser({ newUser });
       handleClose();
     } catch (error) {
-      console.error('Error registering user:', error);
+      console.error("Error registering user:", error);
     }
   };
 
   const handleReset = () => {
-    setFullName("");
-    setPoliceStation("");
-    setMobileNo("");
-    setZone("");
-    setEmail("");
-    setLocation("");
-    setRank("");
-    setDateOfBirth(null);
+    setNewUser({
+      fullName: "",
+      policeStation: "",
+      mobileNo: "",
+      zone: "",
+      email: "",
+      location: "",
+      rank: "",
+      dateOfBirth: null,
+    });
   };
 
   return (
@@ -59,47 +86,92 @@ const CreateUserModal = ({ open, handleClose }: { open: boolean, handleClose: ()
       >
         <Box sx={boxStyles}>
           <Box sx={headerStyles}>
-            <Typography id="add-user-modal-title" variant="h6" component="h2" sx={titleStyles}>
+            <Typography
+              id="add-user-modal-title"
+              variant="h6"
+              component="h2"
+              sx={titleStyles}
+            >
               Add User
             </Typography>
-            <img src={CloseIcon} onClick={handleClose} style={{ cursor: "pointer" }} />
+            <img
+              src={CloseIcon}
+              onClick={handleClose}
+              style={{ cursor: "pointer" }}
+            />
           </Box>
           <Grid2 container spacing={2} sx={{ justifyContent: "space-evenly" }}>
             <Grid2 size={5}>
               <Typography variant="body1" sx={labelStyles}>
                 Full Name
               </Typography>
-              <TextField fullWidth placeholder="Enter Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)} sx={textFieldStyles} />
+              <TextField
+                fullWidth
+                placeholder="Enter Full Name"
+                value={newUser.fullName}
+                onChange={(e) => handleChange("fullName", e.target.value)}
+                sx={textFieldStyles}
+              />
             </Grid2>
             <Grid2 size={5}>
               <Typography variant="body1" sx={labelStyles}>
                 Police Station
               </Typography>
-              <TextField fullWidth placeholder="Enter Police Station" value={policeStation} onChange={(e) => setPoliceStation(e.target.value)} sx={textFieldStyles} />
+              <TextField
+                fullWidth
+                placeholder="Enter Police Station"
+                value={newUser.policeStation}
+                onChange={(e) => handleChange("policeStation", e.target.value)}
+                sx={textFieldStyles}
+              />
             </Grid2>
             <Grid2 size={5}>
               <Typography variant="body1" sx={labelStyles}>
                 Mobile No.
               </Typography>
-              <TextField fullWidth placeholder="Enter Mobile No." value={mobileNo} onChange={(e) => setMobileNo(e.target.value)} sx={textFieldStyles} />
+              <TextField
+                fullWidth
+                placeholder="Enter Mobile No."
+                value={newUser.mobileNo}
+                onChange={(e) => handleChange("mobileNo", e.target.value)}
+                sx={textFieldStyles}
+              />
             </Grid2>
             <Grid2 size={5}>
               <Typography variant="body1" sx={labelStyles}>
                 Zone
               </Typography>
-              <TextField fullWidth placeholder="Enter Zone" value={zone} onChange={(e) => setZone(e.target.value)} sx={textFieldStyles} />
+              <TextField
+                fullWidth
+                placeholder="Enter Zone"
+                value={newUser.zone}
+                onChange={(e) => handleChange("zone", e.target.value)}
+                sx={textFieldStyles}
+              />
             </Grid2>
             <Grid2 size={5}>
               <Typography variant="body1" sx={labelStyles}>
                 Email
               </Typography>
-              <TextField fullWidth placeholder="Enter Email" value={email} onChange={(e) => setEmail(e.target.value)} sx={textFieldStyles} />
+              <TextField
+                fullWidth
+                placeholder="Enter Email"
+                value={newUser.email}
+                onChange={(e) => handleChange("email", e.target.value)}
+                sx={textFieldStyles}
+              />
             </Grid2>
             <Grid2 size={5}>
               <Typography variant="body1" sx={labelStyles}>
                 Location
               </Typography>
-              <TextField fullWidth placeholder="Enter Location" value={location} onChange={(e) => setLocation(e.target.value)} sx={textFieldStyles} />
+              <TextField
+                fullWidth
+                placeholder="Enter Location"
+                value={newUser.location}
+                onChange={(e) => handleChange("location", e.target.value)}
+                sx={textFieldStyles}
+              />
             </Grid2>
             <Grid2 size={5}>
               <Typography variant="body1" sx={labelStyles}>
@@ -109,8 +181,8 @@ const CreateUserModal = ({ open, handleClose }: { open: boolean, handleClose: ()
                 select
                 fullWidth
                 placeholder="Select Role"
-                value={rank}
-                onChange={(e) => setRank(e.target.value)}
+                value={newUser.rank}
+                onChange={(e) => handleChange("rank", e.target.value)}
                 sx={textFieldStyles}
               >
                 {roles.map((role) => (
@@ -127,15 +199,40 @@ const CreateUserModal = ({ open, handleClose }: { open: boolean, handleClose: ()
               <TextField
                 fullWidth
                 type="date"
-                value={dateOfBirth ? dateOfBirth.toISOString().split('T')[0] : ''}
-                onChange={(e) => setDateOfBirth(e.target.value ? new Date(e.target.value) : null)}
+                value={
+                  newUser.dateOfBirth
+                    ? newUser.dateOfBirth.toISOString().split("T")[0]
+                    : ""
+                }
+                onChange={(e) =>
+                  handleChange(
+                    "dateOfBirth",
+                    e.target.value ? new Date(e.target.value) : null
+                  )
+                }
                 sx={textFieldStyles}
               />
             </Grid2>
           </Grid2>
-          <Box display={"flex"} justifyContent={"flex-end"} sx={{ height: "47px", mt: 2 }}>
-            <Button variant="outlined" sx={resetButtonStyles} onClick={handleReset}>Reset</Button>
-            <Button variant="contained" sx={submitButtonStyles} onClick={handleSubmit}>Submit</Button>
+          <Box
+            display={"flex"}
+            justifyContent={"flex-end"}
+            sx={{ height: "47px", mt: "auto" }}
+          >
+            <Button
+              variant="outlined"
+              sx={resetButtonStyles}
+              onClick={handleReset}
+            >
+              Reset
+            </Button>
+            <Button
+              variant="contained"
+              sx={submitButtonStyles}
+              onClick={handleSubmit}
+            >
+              Submit
+            </Button>
           </Box>
         </Box>
       </Modal>
@@ -169,7 +266,7 @@ const boxStyles: SxProps = {
 };
 
 const headerStyles: SxProps = {
-  flexGrow: 1,
+  // flexGrow: 1,
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",

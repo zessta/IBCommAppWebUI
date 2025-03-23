@@ -10,17 +10,16 @@ import {
   Theme,
 } from "@mui/material";
 import CloseIcon from "../assets/CloseIcon.svg";
-import { GRAY, VIOLET, WHITE, RED, BLUE } from "../utils/constants";
+import { GRAY, WHITE, RED, BLUE } from "../utils/constants";
 import { addEventTag, addTagStatus } from "../api/requests/events";
 
-const CreateTagModal = ({
-  open,
-  handleClose,
-}: {
+interface CreateTagModalProps {
   open: boolean;
   handleClose: () => void;
-}) => {
-  const [tagName, setTagName] = useState("");
+}
+
+const CreateTagModal: React.FC<CreateTagModalProps> = ({ open, handleClose }) => {
+  const [tagName, setTagName] = useState<string>("");
   const [statusFields, setStatusFields] = useState<string[]>([]);
 
   const handleAddStatusField = () => {

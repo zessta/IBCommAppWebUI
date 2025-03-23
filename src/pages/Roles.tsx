@@ -7,14 +7,14 @@ import {
   CircularProgress,
   SxProps,
 } from "@mui/material";
-import { BLUE, GRAY, VIOLET, WHITE } from "../utils/constants";
+import { BLUE, GRAY, WHITE } from "../utils/constants";
 import SearchIcon from "../assets/SearchIcon.svg";
 import AddIcon from "@mui/icons-material/Add";
 import RolesList from "../components/RolesList";
 import CreateRoleModal from "../components/CreateRoleModal";
 import useRoles from "../hooks/useRoles";
 
-const Roles = () => {
+const Roles: React.FC = () => {
   const [currentEditingRole, setCurrentEditingRole] = useState<any>(null);
   const [showRoleModal, setShowRoleModal] = useState(false);
   const [searchRole, setSearchRole] = useState("");

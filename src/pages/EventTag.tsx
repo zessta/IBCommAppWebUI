@@ -3,17 +3,23 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, SxProps } from "@mui/material";
 import EventTagsList from "../components/EventTagsList";
 import { getEventTags } from "../api/requests/events";
-import { BLUE, GRAY, VIOLET, WHITE } from "../utils/constants";
+import { BLUE, GRAY, WHITE } from "../utils/constants";
 import SearchIcon from "../assets/SearchIcon.svg";
 import AddIcon from "@mui/icons-material/Add";
 import CreateTagModal from "../components/CreateTagModal";
 
-const EventTag = () => {
-  const [tags, setTags] = useState<any[]>([]);
-  const [currentTag, setCurrentTag] = useState<any>(null);
+interface EventTag {
+  eventTagId: number;
+  name: string;
+  statuses: { eventTagStatusId: number; statusName: string }[];
+}
+
+const EventTag: React.FC = () => {
+  const [tags, setTags] = useState<EventTag[]>([]);
+  const [currentTag, setCurrentTag] = useState<EventTag | null>(null);
   const [showCreateTag, setShowCreateTag] = useState(false);
   const [searchTag, setSearchTag] = useState("");
-  const [filteredTags, setFilteredTags] = useState<any[]>([]);
+  const [filteredTags, setFilteredTags] = useState<EventTag[]>([]);
 
   const handleCloseTagCreation = () => {
     setShowCreateTag(false);
@@ -21,9 +27,13 @@ const EventTag = () => {
   };
 
   const fetchEventTags = async () => {
-    const response = await getEventTags();
-    if (response.status === 200) {
-      setTags(response.data);
+    try {
+      const response = await getEventTags();
+      if (response.status === 200) {
+        setTags(response.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch event tags:", error);
     }
   };
 
@@ -32,7 +42,7 @@ const EventTag = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = tags.filter((tag: any) =>
+    const filtered = tags.filter((tag) =>
       tag.name.toLowerCase().includes(searchTag.toLowerCase())
     );
     setFilteredTags(filtered);

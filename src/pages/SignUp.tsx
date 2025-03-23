@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef, useState } from "react";
 import {
   Container,
@@ -14,7 +15,7 @@ import { BLUE, GRAY, WHITE } from "../utils/constants";
 import { createPassword, isUserPasswordCreated } from "../api/requests/users";
 import AppLogoViolet from "../assets/brownTheme/AppLogo.svg";
 
-const SignUp = () => {
+const SignUp: React.FC = () => {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(true);
   const [isPasswordCreated, setIsPasswordCreated] = useState(false);
@@ -29,15 +30,22 @@ const SignUp = () => {
   const [statusText, setStatusText] = useState("");
 
   useEffect(() => {
-    setTimeout(async () => {
-      const userStatus = await isUserPasswordCreated({ token: userKey ?? "" });
-      if (userStatus.data) {
-        setStatusText("Password Already Created, Redirecting to Sign in...");
-        setIsPasswordCreated(userStatus.data);
+    setLoader(true);
+    const fetchUserStatus = async () => {
+      try {
+        const userStatus = await isUserPasswordCreated({ token: userKey ?? "" });
+        if (userStatus.data) {
+          setStatusText("Password Already Created, Redirecting to Sign in...");
+          setIsPasswordCreated(userStatus.data);
+        }
+      } catch (error) {
+        console.error("Error fetching user status:", error);
+      } finally {
+        setLoader(false);
       }
-      setLoader(false);
-    }, 2000);
-  }, []);
+    };
+    setTimeout(fetchUserStatus, 2000);
+  }, [userKey]);
 
   if (loader) {
     return (
@@ -47,7 +55,7 @@ const SignUp = () => {
     );
   }
 
-  const RedirecToLogin = () => {
+  const redirectToLogin = () => {
     setTimeout(() => navigate("/login"), 2000);
     return (
       <Box sx={redirectionBoxStyles}>
@@ -58,7 +66,7 @@ const SignUp = () => {
     );
   };
 
-  const validatePasswords = () => {
+  const validatePasswords = (): boolean => {
     const newPassword = newPasswordRef.current?.value;
     const confirmPassword = confirmPasswordRef.current?.value;
     let valid = true;
@@ -77,23 +85,28 @@ const SignUp = () => {
     setErrors(newErrors);
     return valid;
   };
+
   const handlePasswordCreation = async () => {
     if (validatePasswords()) {
-      const response = await createPassword({
-        token: userKey!,
-        newPassword: newPasswordRef.current?.value ?? "",
-      });
-      if (response.status === 200) {
-        setStatusText(
-          "Password Created Successfully, You will be re-directed to Sign in..."
-        );
-        setIsPasswordCreated(true);
+      try {
+        const response = await createPassword({
+          token: userKey!,
+          newPassword: newPasswordRef.current?.value ?? "",
+        });
+        if (response.status === 200) {
+          setStatusText(
+            "Password Created Successfully, You will be re-directed to Sign in..."
+          );
+          setIsPasswordCreated(true);
+        }
+      } catch (error) {
+        console.error("Error creating password:", error);
       }
     }
   };
 
   if (isPasswordCreated) {
-    return <RedirecToLogin />;
+    return redirectToLogin();
   }
 
   return (
