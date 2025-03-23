@@ -14,12 +14,32 @@ import UsersList from "../components/UsersList";
 import CreateUserModal from "../components/CreateUserModal";
 import { getUsers, getUserMetrics } from "../api/requests/users";
 
-const Users = () => {
+interface User {
+  userId: string;
+  fullName: string;
+  mobileNo: string;
+  email: string;
+  dateOfBirth: string;
+  policeStation: string;
+  zone: string;
+  location: string;
+  rank: string;
+}
+
+interface UserMetrics {
+  userId: string;
+  messagesSent?: number;
+  groupMessages?: number;
+  groupsCreated?: number;
+  groupsJoined?: number;
+}
+
+const Users: React.FC = () => {
   const [showUserModal, setShowUserModal] = useState(false);
   const [searchUser, setSearchUser] = useState("");
-  const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
-  const [users, setUsers] = useState<any[]>([]);
-  const [userMetrics, setUserMetrics] = useState<any[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [userMetrics, setUserMetrics] = useState<UserMetrics[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleCloseUserCreation = () => {
@@ -29,10 +49,13 @@ const Users = () => {
 
   const fetchUserData = async () => {
     setLoading(true);
-    setTimeout(async () => {
-      await fetchUsers();
-      await fetchUserMetrics();
-    },500)
+    try {
+      await Promise.all([fetchUsers(), fetchUserMetrics()]);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const fetchUsers = async () => {
@@ -41,28 +64,24 @@ const Users = () => {
       setUsers(response.data);
     } catch (error) {
       console.error("Failed to fetch users:", error);
-    } finally {
-      setLoading(false);
     }
-  }
+  };
 
   const fetchUserMetrics = async () => {
     try {
       const response = await getUserMetrics();
       setUserMetrics(response.data);
     } catch (error) {
-      console.error("Failed to fetch users:", error);
-    } finally {
-      setLoading(false);
+      console.error("Failed to fetch user metrics:", error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchUserData();
   }, []);
 
   useEffect(() => {
-    const filtered = users.filter((user: any) =>
+    const filtered = users.filter((user) =>
       user.fullName.toLowerCase().includes(searchUser.toLowerCase())
     );
     setFilteredUsers(filtered);
@@ -93,13 +112,10 @@ const Users = () => {
       </Box>
       {loading ? (
         <Box sx={loadingBoxStyles}>
-          <CircularProgress  size={60} thickness={6} />
+          <CircularProgress size={60} thickness={6} />
         </Box>
       ) : (
-        <UsersList
-          users={filteredUsers}
-          userMetrics={userMetrics}
-        />
+        <UsersList users={filteredUsers} userMetrics={userMetrics} />
       )}
       {showUserModal && (
         <CreateUserModal

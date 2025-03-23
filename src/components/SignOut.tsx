@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Box, CircularProgress, Typography, SxProps } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { removeItem } from "../utils/utils";
-import { BROWN, VIOLET, WHITE } from "../utils/constants";
+import { WHITE } from "../utils/constants";
 
 const SignOut = () => {
   const navigate = useNavigate();

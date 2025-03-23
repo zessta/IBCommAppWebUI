@@ -8,6 +8,22 @@ import ActiveIcon from "../assets/ActiveIcon.svg";
 import EditIcon from "../assets/brownTheme/EditIcon.svg";
 import PieIcon from "../assets/brownTheme/PieIcon.svg";
 
+interface EventTag {
+  eventTagId: number;
+  name: string;
+  statuses: EventTagStatus[];
+}
+
+interface EventTagStatus {
+  eventTagStatusId: number;
+  statusName: string;
+}
+
+interface EventTagsListProps {
+  tags: EventTag[];
+  setCurrentTag: (tag: EventTag) => void;
+}
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: BROWN.dark,
   ...theme.typography.body2,
@@ -18,16 +34,10 @@ const Item = styled(Paper)(({ theme }) => ({
   borderRadius: "7.78px",
 }));
 
-const EventTagsList = ({
-  tags,
-  setCurrentTag,
-}: {
-  tags: any;
-  setCurrentTag: any;
-}) => {
+const EventTagsList: React.FC<EventTagsListProps> = ({ tags, setCurrentTag }) => {
   return (
     <Box sx={outerBoxStyles}>
-      {tags.map((tag: any) => (
+      {tags.map((tag) => (
         <Card key={tag.eventTagId} sx={cardStyles}>
           <Box sx={headerBoxStyles}>
             <MenuItem key={tag.eventTagId} value={tag.name} sx={menuItemStyles}>
@@ -46,7 +56,7 @@ const EventTagsList = ({
           {tag.statuses.length > 0 && (
             <Box sx={statusBoxStyles}>
               <Stack direction="row" spacing={2} sx={stackStyles} useFlexGap>
-                {tag.statuses?.map((status: any) => (
+                {tag.statuses.map((status) => (
                   <Item key={status.eventTagStatusId}>{status.statusName}</Item>
                 ))}
               </Stack>

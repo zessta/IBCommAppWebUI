@@ -16,19 +16,26 @@ import DashboardIcon from "../assets/DashboardIcon.svg";
 import TagsIcon from "../assets/TagsIcon.svg";
 import RolesIcon from "../assets/RolesIcon.svg";
 import UsersIcon from "../assets/UsersIcon.svg";
+import LogoutIcon from "../assets/LogoutIcon.svg";
 import { BLUE, BROWN } from "../utils/constants";
 import { BASE, EVENTTAGPATH, ROLESPATH, USERSPATH } from "../routes/routePaths";
-import LogoutIcon from "../assets/LogoutIcon.svg"
 
-const menuItems = [
+interface MenuItem {
+  id: number;
+  to: string;
+  text: string;
+  icon: JSX.Element;
+}
+
+const menuItems: MenuItem[] = [
   { id: 1, to: BASE, text: "Dashboard", icon: <img src={DashboardIcon} /> },
   { id: 2, to: EVENTTAGPATH, text: "Tags", icon: <img src={TagsIcon} /> },
   { id: 3, to: ROLESPATH, text: "Roles", icon: <img src={RolesIcon} /> },
   { id: 4, to: USERSPATH, text: "Users", icon: <img src={UsersIcon} /> },
 ];
 
-const Sidebar = () => {
-  const [selectedMenu, setSelectedMenu] = useState(0);
+const Sidebar: React.FC = () => {
+  const [selectedMenu, setSelectedMenu] = useState<number>(0);
   const navigate = useNavigate();
 
   const handleSelect = (id: number) => {
@@ -61,7 +68,7 @@ const Sidebar = () => {
           navigate("/signout");
         }}
       >
-        <img src={LogoutIcon}/>
+        <img src={LogoutIcon} />
         Logout
       </Button>
     </Drawer>
@@ -86,7 +93,7 @@ const logoBoxStyles: SxProps = {
 };
 
 const logoStyles: React.CSSProperties = {
-  width: "60.621788024902344px",
+  width: "60.62px",
   height: "70px",
   marginBottom: "16px",
 };
@@ -122,6 +129,6 @@ const logoutButtonStyles: SxProps = {
   m: 2,
   mt: "auto",
   bgcolor: BLUE.dark,
-  textTransform:"none",
-  gap:2
+  textTransform: "none",
+  gap: 2,
 };

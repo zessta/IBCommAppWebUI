@@ -78,26 +78,6 @@ const outerBoxStyles: SxProps = {
   boxSizing:"border-box"
 };
 
-// const headerBoxStyles: SxProps = {
-//   display: "flex",
-//   justifyContent: "space-between",
-//   alignItems: "center",
-//   mb: 2,
-// };
-
-// const searchFieldStyles: SxProps = {
-//   bgcolor: GRAY.light,
-//   "& .MuiOutlinedInput-root": {
-//     borderRadius: "11px",
-//     "& fieldset": {
-//       borderColor: "transparent",
-//     },
-//   },
-//   borderRadius: "11px",
-//   flexGrow: 1,
-//   mr: 4,
-// };
-
 const cardBoxStyles: SxProps = {
   display:"flex",
   gap:2,

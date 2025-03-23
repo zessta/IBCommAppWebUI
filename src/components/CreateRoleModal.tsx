@@ -13,27 +13,45 @@ import {
   OutlinedInput,
   Chip,
   MenuItem,
+  SelectChangeEvent,
 } from "@mui/material";
 import CloseIcon from "../assets/CloseIcon.svg";
-import { BLUE, GRAY, WHITE } from "../utils/constants";
+import { BLUE, GRAY } from "../utils/constants";
 import { createRank } from "../api/requests/roles";
 import useModuleActions from "../hooks/useModuleActions";
 
-const CreateRoleModal = ({
-  open,
-  handleClose,
-}: {
+interface ModuleAction {
+  module: string;
+  actions: string[];
+}
+
+interface CreateRoleModalProps {
   open: boolean;
   handleClose: () => void;
-}) => {
-  const [roleTitle, setRoleTitle] = useState("");
-  const [selectedValues, setSelectedValues] = useState<any[]>([]);
-  const [errors, setErrors] = useState({ rank: "", modules: "" });
-  const { moduleActions }: { moduleActions: { module: string; actions: string[] }[] } = useModuleActions();
+}
 
-  const handleChange = (event: any, index: number) => {
-    const value = event.target.value;
-    const selectedActions = typeof value === "string" ? value.split(",") : value;
+interface SelectedValue {
+  module: string;
+  actions: string[];
+}
+
+interface ErrorState {
+  rank: string;
+  modules: string;
+}
+
+const CreateRoleModal: React.FC<CreateRoleModalProps> = ({
+  open,
+  handleClose,
+}) => {
+  const [roleTitle, setRoleTitle] = useState<string>("");
+  const [selectedValues, setSelectedValues] = useState<SelectedValue[]>([]);
+  const [errors, setErrors] = useState<ErrorState>({ rank: "", modules: "" });
+  const { moduleActions }: { moduleActions: ModuleAction[] } = useModuleActions();
+
+  const handleChange = (event: SelectChangeEvent<string[]>, index: number) => {
+    const value = event.target.value as string[];
+    const selectedActions = value;
 
     const existingModuleIndex = selectedValues.findIndex(
       (item) => item.module === moduleActions[index].module
@@ -60,8 +78,8 @@ const CreateRoleModal = ({
     }
   };
 
-  const validateForm = () => {
-    const newErrors = { rank: "", modules: "" };
+  const validateForm = (): boolean => {
+    const newErrors: ErrorState = { rank: "", modules: "" };
     let isValid = true;
 
     if (!roleTitle.trim()) {
@@ -80,15 +98,10 @@ const CreateRoleModal = ({
 
   const handleSubmit = async () => {
     if (validateForm()) {
-      // const payload = {
-      //   name: roleTitle,
-      //   modules: selectedValues,
-      // };
-      await createRank({rank:roleTitle, moduleActions:selectedValues});
+      await createRank({ rank: roleTitle, moduleActions: selectedValues });
       handleClose();
     }
   };
-  console.log(selectedValues)
 
   return (
     <Backdrop open={open} sx={backdropStyles}>
@@ -132,7 +145,7 @@ const CreateRoleModal = ({
           </Typography>
           <Box sx={{ maxHeight: "300px", overflowY: "auto" }}>
             {moduleActions &&
-              moduleActions.map((module: any, index) => (
+              moduleActions.map((module, index) => (
                 <Box key={index} sx={moduleBoxStyles}>
                   <Typography variant="body2" sx={moduleLabelStyles}>
                     {module.module}
@@ -148,7 +161,7 @@ const CreateRoleModal = ({
                     input={<OutlinedInput />}
                     renderValue={(selected) => (
                       <Box sx={chipContainerStyles}>
-                        {selected.map((value:any) => (
+                        {(selected as string[]).map((value) => (
                           <Chip key={value} label={value} sx={chipStyles} />
                         ))}
                       </Box>
@@ -156,7 +169,7 @@ const CreateRoleModal = ({
                     fullWidth
                     sx={selectStyles}
                   >
-                    {module.actions.map((option: string) => (
+                    {module.actions.map((option) => (
                       <MenuItem key={option} value={option}>
                         {option}
                       </MenuItem>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef, useState } from "react";
 import {
   TextField,
@@ -8,6 +9,7 @@ import {
   Grid2,
   InputAdornment,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { signInApi } from "../api/requests/signIn";
@@ -16,36 +18,42 @@ import { BLUE, GRAY, WHITE } from "../utils/constants";
 import AppLogoViolet from "../assets/brownTheme/AppLogo.svg";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-const Login = () => {
+const Login: React.FC = () => {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setLoader(true);
-    if (!emailRef.current?.value || !passwordRef.current?.value) {
-      console.log("Email or password is empty");
+    setErrorMessage(null);
+
+    const email = emailRef.current?.value || "";
+    const password = passwordRef.current?.value || "";
+
+    if (!email || !password) {
+      setErrorMessage("Email or password cannot be empty.");
       setLoader(false);
       return;
     }
 
-    setTimeout(async () => {
-      const response = await signInApi({
-        email: emailRef.current?.value || "",
-        password: passwordRef.current?.value || "",
-      });
+    try {
+      const response = await signInApi({ email, password });
       if (response?.status === 200) {
         setItem({ key: "token", value: response?.data?.token });
         navigate("/");
       } else {
-        console.log(response?.data);
+        setErrorMessage(response?.data?.message || "Login failed.");
       }
+    } catch {
+      setErrorMessage("An error occurred during login.");
+    } finally {
       setLoader(false);
-    }, 2000);
+    }
   };
 
   useEffect(() => {
@@ -53,7 +61,7 @@ const Login = () => {
     if (token) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <Box sx={outerBoxStyles}>
@@ -106,13 +114,19 @@ const Login = () => {
                 }}
                 sx={textFieldStyles}
               />
+              {errorMessage && (
+                <Typography color="error" sx={{ mt: 2 }}>
+                  {errorMessage}
+                </Typography>
+              )}
               <Button
                 onClick={handleLogin}
                 fullWidth
                 variant="contained"
                 sx={buttonStyles}
+                disabled={loader}
               >
-                Sign in
+                {loader ? <CircularProgress size={24} color="inherit" /> : "Sign in"}
               </Button>
             </Box>
           </Grid2>

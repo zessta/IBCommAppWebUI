@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import {
   Box,
@@ -13,26 +12,47 @@ import { BLUE, BROWN, GRAY, WHITE } from "../utils/constants";
 import Profile from "../assets/Profile.svg";
 import EditOutlinedIcon from "../assets/brownTheme/EditOutlinedIcon.svg";
 
-const UsersList = ({
-  users,
-  userMetrics
-}: {
-  users: any;
-  userMetrics:any;
-}) => {
-  const mergedData = users.map((user: any) => {
-    const userMetric = userMetrics.find((u: any) => u.userId === user.userId) || {};
+interface User {
+  userId: string;
+  fullName: string;
+  mobileNo: string;
+  email: string;
+  dateOfBirth: string;
+  policeStation: string;
+  zone: string;
+  location: string;
+  rank: string;
+  messagesSent?: number;
+  groupMessages?: number;
+  groupsCreated?: number;
+  groupsJoined?: number;
+}
+
+interface UserMetrics {
+  userId: string;
+  messagesSent?: number;
+  groupMessages?: number;
+  groupsCreated?: number;
+  groupsJoined?: number;
+}
+
+interface UsersListProps {
+  users: User[];
+  userMetrics: UserMetrics[];
+}
+
+const UsersList: React.FC<UsersListProps> = ({ users, userMetrics }) => {
+  const mergedData = users.map((user) => {
+    const userMetric = userMetrics.find((u) => u.userId === user.userId) || {};
     return {
       ...user,
       ...userMetric,
     };
   });
 
-  console.log(mergedData)
-  
   return (
     <Box sx={outerBoxStyles}>
-      {mergedData && mergedData.map((user: any) => (
+      {mergedData.map((user) => (
         <Card key={user.userId} sx={cardStyles}>
           <Box sx={headerBoxStyles}>
             <Avatar alt="User Avatar" src={Profile} sx={avatarStyles} />
@@ -75,21 +95,21 @@ const UsersList = ({
                     Role: {user.rank}
                   </Typography>
                   <Typography variant="body2" sx={infoTextStyles}>
-                    Message Sent: {user.messagesSent??0}
+                    Message Sent: {user.messagesSent ?? 0}
                   </Typography>
                   <Typography variant="body2" sx={infoTextStyles}>
-                    Group Messages: {user.groupMessages??0}
+                    Group Messages: {user.groupMessages ?? 0}
                   </Typography>
                   <Typography variant="body2" sx={infoTextStyles}>
-                    Group Created: {user.groupsCreated??0}
+                    Group Created: {user.groupsCreated ?? 0}
                   </Typography>
                 </Grid2>
                 <Grid2 size={6}>
                   <Typography variant="body2" sx={infoTextStyles}>
-                    Group Joined: {user.groupsJoined??0}
+                    Group Joined: {user.groupsJoined ?? 0}
                   </Typography>
                   <Typography variant="body2" sx={infoTextStyles}>
-                    Responses: {user.groupsJoined??0}
+                    Responses: {user.groupsJoined ?? 0}
                   </Typography>
                 </Grid2>
               </Grid2>
@@ -120,7 +140,7 @@ const UsersList = ({
                   fontWeight={700}
                   fontSize={"25.78px"}
                 >
-                  {user.groupsJoined??0}
+                  {user.groupsJoined ?? 0}
                 </Typography>
                 <Typography fontSize={"12.89px"}>Groups</Typography>
               </Grid2>
@@ -130,7 +150,7 @@ const UsersList = ({
                   fontWeight={700}
                   fontSize={"25.78px"}
                 >
-                  {user.groupsCreated??0}
+                  {user.groupsCreated ?? 0}
                 </Typography>
                 <Typography fontSize={"12.89px"}>Created</Typography>
               </Grid2>
