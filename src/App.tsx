@@ -16,14 +16,14 @@ const App = () => {
     // To send a message
     connection.invoke("SendMessage", "Hello, World!");
   };
-  useEffect(() => {
-    initializeSocket();
-    return () => {
-      closeHubConnection();
-    }
-  },[])
+  // useEffect(() => {
+  //   initializeSocket();
+  //   return () => {
+  //     closeHubConnection();
+  //   }
+  // },[])
 
-  console.log(getHubConnection())
+  // console.log(getHubConnection())
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
       <Routes />
