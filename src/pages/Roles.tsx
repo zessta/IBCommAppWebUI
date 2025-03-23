@@ -19,10 +19,11 @@ const Roles = () => {
   const [showRoleModal, setShowRoleModal] = useState(false);
   const [searchRole, setSearchRole] = useState("");
   const [filteredRoles, setFilteredRoles] = useState<any[]>([]);
-  const { roles, loading, error } = useRoles();
+  const { roles, loading, error, refreshRoles } = useRoles();
 
-  const handleCloseRoleCreation = () => {
+  const handleCloseRoleCreation = async () => {
     setShowRoleModal(false);
+    await refreshRoles();
   };
 
   useEffect(() => {
@@ -57,7 +58,7 @@ const Roles = () => {
       </Box>
       {loading ? (
         <Box sx={loadingBoxStyles}>
-          <CircularProgress  size={60} thickness={6} />
+          <CircularProgress size={60} thickness={6} />
         </Box>
       ) : (
         <RolesList

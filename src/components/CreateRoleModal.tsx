@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import {
   Modal,
@@ -8,10 +9,15 @@ import {
   Button,
   SxProps,
   Theme,
+  Select,
+  OutlinedInput,
+  Chip,
+  MenuItem,
 } from "@mui/material";
 import CloseIcon from "../assets/CloseIcon.svg";
-import { BLUE, GRAY, VIOLET } from "../utils/constants";
-import { addRole } from "../api/requests/roles";
+import { BLUE, GRAY, WHITE } from "../utils/constants";
+import { createRank } from "../api/requests/roles";
+import useModuleActions from "../hooks/useModuleActions";
 
 const CreateRoleModal = ({
   open,
@@ -21,12 +27,68 @@ const CreateRoleModal = ({
   handleClose: () => void;
 }) => {
   const [roleTitle, setRoleTitle] = useState("");
-  const [roleDescription, setRoleDescription] = useState("");
+  const [selectedValues, setSelectedValues] = useState<any[]>([]);
+  const [errors, setErrors] = useState({ rank: "", modules: "" });
+  const { moduleActions }: { moduleActions: { module: string; actions: string[] }[] } = useModuleActions();
+
+  const handleChange = (event: any, index: number) => {
+    const value = event.target.value;
+    const selectedActions = typeof value === "string" ? value.split(",") : value;
+
+    const existingModuleIndex = selectedValues.findIndex(
+      (item) => item.module === moduleActions[index].module
+    );
+
+    if (selectedActions.length > 0) {
+      if (existingModuleIndex !== -1) {
+        // Update existing module's actions
+        const updatedValues = [...selectedValues];
+        updatedValues[existingModuleIndex].actions = selectedActions;
+        setSelectedValues(updatedValues);
+      } else {
+        // Add new module with actions
+        setSelectedValues([
+          ...selectedValues,
+          { module: moduleActions[index].module, actions: selectedActions },
+        ]);
+      }
+    } else if (existingModuleIndex !== -1) {
+      // Remove module if no actions are selected
+      const updatedValues = [...selectedValues];
+      updatedValues.splice(existingModuleIndex, 1);
+      setSelectedValues(updatedValues);
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = { rank: "", modules: "" };
+    let isValid = true;
+
+    if (!roleTitle.trim()) {
+      newErrors.rank = "Rank is required";
+      isValid = false;
+    }
+
+    if (selectedValues.length === 0) {
+      newErrors.modules = "At least one module must be selected";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleSubmit = async () => {
-    await addRole({ name: roleTitle, description: roleDescription });
-    handleClose();
+    if (validateForm()) {
+      // const payload = {
+      //   name: roleTitle,
+      //   modules: selectedValues,
+      // };
+      await createRank({rank:roleTitle, moduleActions:selectedValues});
+      handleClose();
+    }
   };
+  console.log(selectedValues)
 
   return (
     <Backdrop open={open} sx={backdropStyles}>
@@ -45,7 +107,7 @@ const CreateRoleModal = ({
               component="h2"
               sx={titleStyles}
             >
-              Add Role
+              Add Rank
             </Typography>
             <img
               src={CloseIcon}
@@ -53,51 +115,70 @@ const CreateRoleModal = ({
               style={{ cursor: "pointer" }}
             />
           </Box>
-          <Typography
-            id="add-role-modal-description"
-            variant="body1"
-            sx={labelStyles}
-          >
-            Role Title
+          <Typography variant="body1" sx={labelStyles}>
+            Rank
           </Typography>
           <TextField
             fullWidth
-            placeholder="Enter Role Title"
+            placeholder="Enter Rank"
             value={roleTitle}
             onChange={(e) => setRoleTitle(e.target.value)}
-            disabled
+            error={!!errors.rank}
+            helperText={errors.rank}
             sx={textFieldStyles}
           />
-          <Typography
-            id="add-role-modal-description"
-            variant="body1"
-            sx={labelStyles}
-          >
-            Role Description
+          <Typography variant="body1" sx={labelStyles}>
+            Modules
           </Typography>
-          <TextField
-            fullWidth
-            multiline
-            minRows={6}
-            placeholder="Enter Role Description"
-            value={roleDescription}
-            onChange={(e) => setRoleDescription(e.target.value)}
-            disabled
-            sx={textFieldStyles}
-          />
+          <Box sx={{ maxHeight: "300px", overflowY: "auto" }}>
+            {moduleActions &&
+              moduleActions.map((module: any, index) => (
+                <Box key={index} sx={moduleBoxStyles}>
+                  <Typography variant="body2" sx={moduleLabelStyles}>
+                    {module.module}
+                  </Typography>
+                  <Select
+                    multiple
+                    value={
+                      selectedValues.find(
+                        (item) => item?.module === module.module
+                      )?.actions || []
+                    }
+                    onChange={(event) => handleChange(event, index)}
+                    input={<OutlinedInput />}
+                    renderValue={(selected) => (
+                      <Box sx={chipContainerStyles}>
+                        {selected.map((value:any) => (
+                          <Chip key={value} label={value} sx={chipStyles} />
+                        ))}
+                      </Box>
+                    )}
+                    fullWidth
+                    sx={selectStyles}
+                  >
+                    {module.actions.map((option: string) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Box>
+              ))}
+          </Box>
+          {errors.modules && (
+            <Typography color="error" sx={{ mt: 1 }}>
+              {errors.modules}
+            </Typography>
+          )}
           <Box sx={footerStyles}>
             <Button
               variant="contained"
-              disabled
               sx={buttonStyles}
               onClick={handleSubmit}
             >
-              Submit
+              Create
             </Button>
           </Box>
-          <Typography variant="body2" sx={noteStyles}>
-            Note: This feature is not enabled.
-          </Typography>
         </Box>
       </Modal>
     </Backdrop>
@@ -130,7 +211,6 @@ const boxStyles: SxProps = {
 };
 
 const headerStyles: SxProps = {
-  flexGrow: 1,
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
@@ -160,6 +240,37 @@ const textFieldStyles: SxProps = {
   borderRadius: "11px",
 };
 
+const moduleBoxStyles: SxProps = {
+  mb: 2,
+  display: "flex",
+  alignItems: "center",
+  gap: 2,
+};
+
+const moduleLabelStyles: SxProps = {
+  fontFamily: "Poppins, sans-serif",
+  fontSize: "16px",
+  width: "150px", // Fixed width for alignment
+};
+
+const selectStyles: SxProps = {
+  bgcolor: GRAY.light,
+  borderRadius: "11px",
+  mr: 2,
+  flexGrow: 1, // Ensures the select box occupies the remaining space
+};
+
+const chipContainerStyles: SxProps = {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: 0.5,
+};
+
+const chipStyles: SxProps = {
+  bgcolor: BLUE.dark,
+  color: "white",
+};
+
 const footerStyles: SxProps = {
   display: "flex",
   justifyContent: "flex-end",
@@ -171,10 +282,6 @@ const buttonStyles: SxProps = {
   bgcolor: BLUE.dark,
   borderRadius: "9px",
   width: "96px",
+  textTransform: "none",
 };
 
-const noteStyles: SxProps = {
-  my: 2,
-  textAlign: "center",
-  color: "red",
-};

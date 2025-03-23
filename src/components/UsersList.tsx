@@ -15,12 +15,24 @@ import EditOutlinedIcon from "../assets/brownTheme/EditOutlinedIcon.svg";
 
 const UsersList = ({
   users,
+  userMetrics
 }: {
   users: any;
+  userMetrics:any;
 }) => {
+  const mergedData = users.map((user: any) => {
+    const userMetric = userMetrics.find((u: any) => u.userId === user.userId) || {};
+    return {
+      ...user,
+      ...userMetric,
+    };
+  });
+
+  console.log(mergedData)
+  
   return (
     <Box sx={outerBoxStyles}>
-      {users.map((user: any) => (
+      {mergedData && mergedData.map((user: any) => (
         <Card key={user.userId} sx={cardStyles}>
           <Box sx={headerBoxStyles}>
             <Avatar alt="User Avatar" src={Profile} sx={avatarStyles} />
@@ -63,21 +75,21 @@ const UsersList = ({
                     Role: {user.rank}
                   </Typography>
                   <Typography variant="body2" sx={infoTextStyles}>
-                    Message Sent: 5
+                    Message Sent: {user.messagesSent??0}
                   </Typography>
                   <Typography variant="body2" sx={infoTextStyles}>
-                    Group Messages: 0
+                    Group Messages: {user.groupMessages??0}
                   </Typography>
                   <Typography variant="body2" sx={infoTextStyles}>
-                    Group Created: 1
+                    Group Created: {user.groupsCreated??0}
                   </Typography>
                 </Grid2>
                 <Grid2 size={6}>
                   <Typography variant="body2" sx={infoTextStyles}>
-                    Group Joined: 2
+                    Group Joined: {user.groupsJoined??0}
                   </Typography>
                   <Typography variant="body2" sx={infoTextStyles}>
-                    Responses: 0
+                    Responses: {user.groupsJoined??0}
                   </Typography>
                 </Grid2>
               </Grid2>
@@ -98,7 +110,7 @@ const UsersList = ({
                   fontWeight={700}
                   fontSize={"25.78px"}
                 >
-                  5
+                  {(user.groupMessages ?? 0) + (user.messagesSent ?? 0)}
                 </Typography>
                 <Typography fontSize={"12.89px"}>Message</Typography>
               </Grid2>
@@ -108,7 +120,7 @@ const UsersList = ({
                   fontWeight={700}
                   fontSize={"25.78px"}
                 >
-                  5
+                  {user.groupsJoined??0}
                 </Typography>
                 <Typography fontSize={"12.89px"}>Groups</Typography>
               </Grid2>
@@ -118,7 +130,7 @@ const UsersList = ({
                   fontWeight={700}
                   fontSize={"25.78px"}
                 >
-                  5
+                  {user.groupsCreated??0}
                 </Typography>
                 <Typography fontSize={"12.89px"}>Created</Typography>
               </Grid2>

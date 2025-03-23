@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getRoles } from "../api/requests/roles";
 
 type Role = {
@@ -11,6 +11,7 @@ type UseRolesResult = {
   roles: Role[];
   loading: boolean;
   error: string | null;
+  refreshRoles: () => Promise<void>;
 };
 
 const useRoles = (): UseRolesResult => {
@@ -18,28 +19,28 @@ const useRoles = (): UseRolesResult => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchRoles = async () => {
-      setLoading(true);
-      try {
-        const response = await getRoles();
-        const formattedRoles = response.data.result.map((item: { roleId: number; roleName: string }) => ({
-          roleId: item.roleId,
-          roleName: item.roleName,
-          description: "IB User",
-        }));
-        setRoles(formattedRoles);
-      } catch (errorMessage) {
-        setError(`Failed to fetch roles, ${errorMessage}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRoles();
+  const fetchRoles = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await getRoles();
+      const formattedRoles = response.data.result.map((item: { roleId: number; roleName: string }) => ({
+        roleId: item.roleId,
+        roleName: item.roleName,
+        description: "IB User",
+      }));
+      setRoles(formattedRoles);
+    } catch (errorMessage) {
+      setError(`Failed to fetch roles, ${errorMessage}`);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  return { roles, loading, error };
+  useEffect(() => {
+    fetchRoles();
+  }, [fetchRoles]);
+
+  return { roles, loading, error, refreshRoles: fetchRoles };
 };
 
 export default useRoles;

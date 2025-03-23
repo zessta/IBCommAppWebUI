@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
-import { Box, Card, MenuItem, Typography, SxProps } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Card, MenuItem, Typography, SxProps, CardActionArea } from "@mui/material";
 import { BLUE, GRAY, WHITE } from "../utils/constants";
 import ActiveIcon from "../assets/ActiveIcon.svg";
 import EditIcon from "../assets/brownTheme/EditIcon.svg";
 import MenuDotsIcon from "../assets/brownTheme/MenuDotsIcon.svg";
+import UserRoleModal from "./UserRoleModal";
 
 const RolesList = ({
   roles,
@@ -13,31 +14,45 @@ const RolesList = ({
   roles: any;
   setCurrentEditingRole: any;
 }) => {
+  const [selectedRank, setSelectedRank] = useState({})
+  const [showModal, setShowModal] = useState(false);
+
+  const handleRankView = (role:any) => {
+    setSelectedRank(role);
+    setShowModal(true);
+  }
+
+  const handleCloseRankView = () => {
+    setShowModal(false);
+    setSelectedRank({});
+  }
+
   return (
     <Box sx={outerBoxStyles}>
       {roles.map((role: any) => (
-        <Card key={role.id} sx={cardStyles}>
-          <Box sx={headerBoxStyles}>
-            <MenuItem key={role.roleId} value={role.name} sx={menuItemStyles}>
-              {role.roleName}
-              <img src={ActiveIcon} style={{ marginLeft: 8 }} />
-            </MenuItem>
-            <Box sx={iconBoxStyles}>
-              <img
-                src={EditIcon}
-                onClick={() => setCurrentEditingRole(role)}
-                style={{ cursor: "pointer" }}
-              />
-              <img src={MenuDotsIcon} />
+          <Box  key={role.id} sx={cardStyles} onClick={() => handleRankView(role)}>
+            <Box sx={headerBoxStyles}>
+              <MenuItem key={role.roleId} value={role.name} sx={menuItemStyles}>
+                {role.roleName}
+                <img src={ActiveIcon} style={{ marginLeft: 8 }} />
+              </MenuItem>
+              <Box sx={iconBoxStyles}>
+                <img
+                  src={EditIcon}
+                  onClick={() => setCurrentEditingRole(role)}
+                  style={{ cursor: "pointer" }}
+                />
+                <img src={MenuDotsIcon} />
+              </Box>
+            </Box>
+            <Box sx={descriptionBoxStyles}>
+              <Typography variant="body1" sx={descriptionTextStyles}>
+                {role.description}
+              </Typography>
             </Box>
           </Box>
-          <Box sx={descriptionBoxStyles}>
-            <Typography variant="body1" sx={descriptionTextStyles}>
-              {role.description}
-            </Typography>
-          </Box>
-        </Card>
       ))}
+      {showModal && <UserRoleModal open={showModal} rank={selectedRank} handleClose={handleCloseRankView}/>}
     </Box>
   );
 };
@@ -64,6 +79,7 @@ const cardStyles: SxProps = {
   borderRadius: "25px",
   p: "12px",
   boxShadow: "none",
+  cursor:"pointer"
 };
 
 const headerBoxStyles: SxProps = {

@@ -12,36 +12,53 @@ import SearchIcon from "../assets/SearchIcon.svg";
 import AddIcon from "@mui/icons-material/Add";
 import UsersList from "../components/UsersList";
 import CreateUserModal from "../components/CreateUserModal";
-import { getUsers } from "../api/requests/users";
+import { getUsers, getUserMetrics } from "../api/requests/users";
 
 const Users = () => {
   const [showUserModal, setShowUserModal] = useState(false);
   const [searchUser, setSearchUser] = useState("");
   const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
+  const [userMetrics, setUserMetrics] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleCloseUserCreation = () => {
     setShowUserModal(false);
-    fetchUsers();
+    fetchUserData();
   };
 
-  const fetchUsers = async () => {
+  const fetchUserData = async () => {
     setLoading(true);
     setTimeout(async () => {
-      try {
-        const response = await getUsers();
-        setUsers(response.data);
-      } catch (error) {
-        console.error("Failed to fetch users:", error);
-      } finally {
-        setLoading(false);
-      }
+      await fetchUsers();
+      await fetchUserMetrics();
     },500)
   };
 
+  const fetchUsers = async () => {
+    try {
+      const response = await getUsers();
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const fetchUserMetrics = async () => {
+    try {
+      const response = await getUserMetrics();
+      setUserMetrics(response.data);
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
-    fetchUsers();
+    fetchUserData();
   }, []);
 
   useEffect(() => {
@@ -81,6 +98,7 @@ const Users = () => {
       ) : (
         <UsersList
           users={filteredUsers}
+          userMetrics={userMetrics}
         />
       )}
       {showUserModal && (
