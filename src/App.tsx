@@ -9,12 +9,12 @@ const App = () => {
     const hubUrl = process.env.REACT_APP_HUB_URL??"";
     const connection = await createHubConnection(hubUrl, accessToken);
   
-    connection.on("ReceiveMessage", (message) => {
-      console.log("Message received:", message);
-    });
+    // connection.on("ReceiveMessage", (message) => {
+    //   console.log("Message received:", message);
+    // });
   
-    // To send a message
-    connection.invoke("SendMessage", "Hello, World!");
+    // // To send a message
+    // connection.invoke("SendMessage", "Hello, World!");
   };
   // useEffect(() => {
   //   initializeSocket();

@@ -22,7 +22,7 @@ interface RecentEventTagsProps {
 const RecentEventTags: React.FC<RecentEventTagsProps> = ({ eventTagData }) => {
   return eventTagData.length > 0 ? (
     <Box sx={outerBoxStyles}>
-      {eventTagData.map((eventTag) => (
+      {eventTagData && eventTagData.map((eventTag) => (
         <Card key={eventTag.eventTagId} sx={cardStyles}>
           <Typography sx={cardTitleStyles}>#{eventTag.eventTagName}</Typography>
           {eventTag.userTagData.map((userTag) => (

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Backdrop,
   Box,
@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "../assets/CloseIcon.svg";
 import { getUserForRole } from "../api/requests/users";
+import { getHubConnection } from "../utils/hubConnection";
 
 interface Role {
   roleId: number;
@@ -31,6 +32,16 @@ const UserRoleModal: React.FC<UserRoleModalProps> = ({
   handleClose,
 }) => {
   const [users, setUsers] = useState([]);
+  const groupName = useRef<HTMLInputElement>(null);
+
+  const handleCreateGroup = () => {
+    const userIds = users?.map((user:any) => user?.userId);
+    // const connection = getHubConnection();
+    // if(connection){
+    //   connection.invoke("CreateGroup", groupName?.current?.value, userIds);
+    // }
+    // connection?.on("GroupCreated",(groupId, groupName)=> {console.log(groupId); console.log(groupName)})
+  }
 
   const fetchUsersForRank = async () => {
     const response = await getUserForRole(rank.roleName);
@@ -38,6 +49,7 @@ const UserRoleModal: React.FC<UserRoleModalProps> = ({
       setUsers(response.data.users);
     }
   };
+
   useEffect(() => {
     fetchUsersForRank();
   }, []);
@@ -96,8 +108,8 @@ const UserRoleModal: React.FC<UserRoleModalProps> = ({
               <Box
                 sx={{ display: "flex", justifyContent: "flex-end", mt: "auto", gap: 2 }}
               >
-                <TextField size="small" placeholder="Enter Group Name" />
-                <Button variant="contained">Create Group</Button>
+                <TextField size="small" placeholder="Enter Group Name" inputRef={groupName}/>
+                <Button variant="contained" onClick={handleCreateGroup}>Create Group</Button>
               </Box>
             </>
           ) : (

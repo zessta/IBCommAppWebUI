@@ -48,19 +48,19 @@ const Dashboard = () => {
     <Box sx={outerBoxStyles}>
       <Box sx={cardBoxStyles}>
           <Card sx={cardStyles}>
-            <Typography sx={cardCountStyles}>{dashboardData.numberOfEventTags}</Typography>
+            <Typography sx={cardCountStyles}>{dashboardData?.numberOfEventTags}</Typography>
             <Typography sx={cardTextStyles}>Tags</Typography>
           </Card>
           <Card sx={cardStyles}>
-            <Typography sx={cardCountStyles}>{dashboardData.numberOfUsers}</Typography>
+            <Typography sx={cardCountStyles}>{dashboardData?.numberOfUsers}</Typography>
             <Typography sx={cardTextStyles}>Roles</Typography>
           </Card>
           <Card sx={cardStyles}>
-            <Typography sx={cardCountStyles}>{dashboardData.numberOfGroups}</Typography>
+            <Typography sx={cardCountStyles}>{dashboardData?.numberOfGroups}</Typography>
             <Typography sx={cardTextStyles}>Users</Typography>
           </Card>
       </Box>
-      <RecentEventTags eventTagData = {dashboardData.eventTagData}/>
+      <RecentEventTags eventTagData = {dashboardData?.eventTagData}/>
     </Box>
   );
 };

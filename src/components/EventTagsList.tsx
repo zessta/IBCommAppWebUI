@@ -37,7 +37,7 @@ const Item = styled(Paper)(({ theme }) => ({
 const EventTagsList: React.FC<EventTagsListProps> = ({ tags, setCurrentTag }) => {
   return (
     <Box sx={outerBoxStyles}>
-      {tags.map((tag) => (
+      {tags && tags.map((tag) => (
         <Card key={tag.eventTagId} sx={cardStyles}>
           <Box sx={headerBoxStyles}>
             <MenuItem key={tag.eventTagId} value={tag.name} sx={menuItemStyles}>
