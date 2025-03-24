@@ -35,11 +35,11 @@ const UserRoleModal: React.FC<UserRoleModalProps> = ({
   const groupName = useRef<HTMLInputElement>(null);
 
   const handleCreateGroup = () => {
-    const userIds = users.map((user:any) => user?.userId);
-    const connection = getHubConnection();
-    if(connection){
-      connection.invoke("CreateGroup", groupName?.current?.value, userIds);
-    }
+    const userIds = users?.map((user:any) => user?.userId);
+    // const connection = getHubConnection();
+    // if(connection){
+    //   connection.invoke("CreateGroup", groupName?.current?.value, userIds);
+    // }
     // connection?.on("GroupCreated",(groupId, groupName)=> {console.log(groupId); console.log(groupName)})
   }
 
