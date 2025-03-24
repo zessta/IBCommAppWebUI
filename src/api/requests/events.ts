@@ -8,12 +8,12 @@ export const getEventTags = async () => {
 };
 
 export const addEventTag = async ({name, description}:{name: string, description:string}) => {
-  const response = await client.post(`${baseUrl}${CREATEEVENTTAGS}`, { name, description });
+  const response = await client.post(`${baseUrl}/${CREATEEVENTTAGS}`, { name, description });
   return response;
 };
 
 export const addTagStatus = async ({eventTagId, status}:{eventTagId: string, status:string}) => {
-  const response = await client.post(`${baseUrl}${EVENTTAGS}/${eventTagId}/statuses`, { statusName: status });
+  const response = await client.post(`${baseUrl}${EVENTTAGS}/${eventTagId}//statuses`, { statusName: status });
   return response;
 }
 

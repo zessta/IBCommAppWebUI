@@ -5,4 +5,4 @@ import { GETDASHBOARDTAGDATA } from "../endpoints";
 export const getTagDataForDashboard = async () => {
   const response = await client.get(`${baseUrl}${GETDASHBOARDTAGDATA}`);
   return response;
-}
+};

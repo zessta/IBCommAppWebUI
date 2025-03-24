@@ -10,6 +10,7 @@ export const createHubConnection = async (
     connection = new signalR.HubConnectionBuilder()
       .withUrl(hubUrl, {
         accessTokenFactory: () => accessToken,
+        transport: signalR.HttpTransportType.WebSockets, // Force WebSockets
       })
       .withAutomaticReconnect()
       .configureLogging(signalR.LogLevel.Information)
@@ -27,9 +28,10 @@ export const createHubConnection = async (
 
 export const getHubConnection = () => {
   if (!connection) {
-    throw new Error(
+    console.log(
       "SignalR connection has not been established. Call createHubConnection first."
     );
+    return;
   }
   return connection;
 };

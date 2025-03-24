@@ -12,6 +12,7 @@ import {
 import CloseIcon from "../assets/CloseIcon.svg";
 import { GRAY, WHITE, RED, BLUE } from "../utils/constants";
 import { addEventTag, addTagStatus } from "../api/requests/events";
+import { useAlert } from "../context/AlertContext";
 
 interface CreateTagModalProps {
   open: boolean;
@@ -21,6 +22,7 @@ interface CreateTagModalProps {
 const CreateTagModal: React.FC<CreateTagModalProps> = ({ open, handleClose }) => {
   const [tagName, setTagName] = useState<string>("");
   const [statusFields, setStatusFields] = useState<string[]>([]);
+  const { showAlert } = useAlert();
 
   const handleAddStatusField = () => {
     setStatusFields([...statusFields, ""]);
@@ -38,16 +40,23 @@ const CreateTagModal: React.FC<CreateTagModalProps> = ({ open, handleClose }) =>
   };
 
   const handleSubmit = async () => {
-    const response = await addEventTag({ name: tagName, description: "" });
-    if (response.status === 201) {
-      const tagId = response.data.eventTagId;
-      await Promise.all(
-        statusFields.map(async (status) => {
-          await addTagStatus({ eventTagId: tagId, status });
-        })
-      );
+    try{
+      const response = await addEventTag({ name: tagName, description: "" });
+      if (response.status === 201) {
+        const tagId = response.data.eventTagId;
+        await Promise.all(
+          statusFields.map(async (status) => {
+            await addTagStatus({ eventTagId: tagId, status });
+          })
+        );
+      }
     }
-    handleClose();
+    catch{
+      showAlert("Unexpected error occured, please try again later", "error");
+    }
+    finally{
+      handleClose();
+    }
   };
 
   return (
@@ -103,7 +112,7 @@ const CreateTagModal: React.FC<CreateTagModalProps> = ({ open, handleClose }) =>
             sx={textFieldStyles}
           />
           <Box sx={statusBoxStyles}>
-            {statusFields.map((status, index) => (
+            {statusFields && statusFields.map((status, index) => (
               <TextField
                 key={index}
                 fullWidth

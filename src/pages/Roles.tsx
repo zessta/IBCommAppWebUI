@@ -27,7 +27,7 @@ const Roles: React.FC = () => {
   };
 
   useEffect(() => {
-    const filtered = roles.filter((role: any) =>
+    const filtered = roles?.filter((role: any) =>
       role.roleName.toLowerCase().includes(searchRole.toLowerCase())
     );
     setFilteredRoles(filtered);

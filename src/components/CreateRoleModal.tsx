@@ -153,7 +153,7 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({
                   <Select
                     multiple
                     value={
-                      selectedValues.find(
+                      selectedValues?.find(
                         (item) => item?.module === module.module
                       )?.actions || []
                     }

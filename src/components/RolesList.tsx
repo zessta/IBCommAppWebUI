@@ -33,7 +33,7 @@ const RolesList: React.FC<RolesListProps> = ({ roles, setCurrentEditingRole }) =
 
   return (
     <Box sx={outerBoxStyles}>
-      {roles.map((role) => (
+      {roles && roles.map((role) => (
         <Box key={role.roleId} sx={cardStyles} onClick={() => handleRankView(role)}>
           <Box sx={headerBoxStyles}>
             <MenuItem key={role.roleId} value={role.roleName} sx={menuItemStyles}>

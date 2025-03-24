@@ -185,7 +185,7 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({
                 onChange={(e) => handleChange("rank", e.target.value)}
                 sx={textFieldStyles}
               >
-                {roles.map((role) => (
+                {roles && roles.map((role) => (
                   <MenuItem key={role.roleId} value={role.roleName}>
                     {role.roleName}
                   </MenuItem>

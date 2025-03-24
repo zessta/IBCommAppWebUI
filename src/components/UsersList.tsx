@@ -42,8 +42,8 @@ interface UsersListProps {
 }
 
 const UsersList: React.FC<UsersListProps> = ({ users, userMetrics }) => {
-  const mergedData = users.map((user) => {
-    const userMetric = userMetrics.find((u) => u.userId === user.userId) || {};
+  const mergedData = users?.map((user) => {
+    const userMetric = userMetrics?.find((u) => u.userId === user.userId) || {};
     return {
       ...user,
       ...userMetric,
@@ -52,7 +52,7 @@ const UsersList: React.FC<UsersListProps> = ({ users, userMetrics }) => {
 
   return (
     <Box sx={outerBoxStyles}>
-      {mergedData.map((user) => (
+      {mergedData && mergedData.map((user) => (
         <Card key={user.userId} sx={cardStyles}>
           <Box sx={headerBoxStyles}>
             <Avatar alt="User Avatar" src={Profile} sx={avatarStyles} />

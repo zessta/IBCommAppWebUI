@@ -81,7 +81,7 @@ const Users: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = users.filter((user) =>
+    const filtered = users?.filter((user) =>
       user.fullName.toLowerCase().includes(searchUser.toLowerCase())
     );
     setFilteredUsers(filtered);

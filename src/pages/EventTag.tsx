@@ -42,7 +42,7 @@ const EventTag: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = tags.filter((tag) =>
+    const filtered = tags?.filter((tag) =>
       tag.name.toLowerCase().includes(searchTag.toLowerCase())
     );
     setFilteredTags(filtered);
