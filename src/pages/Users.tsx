@@ -115,7 +115,7 @@ const Users: React.FC = () => {
           <CircularProgress size={60} thickness={6} />
         </Box>
       ) : (
-        <UsersList users={filteredUsers} userMetrics={userMetrics} />
+        filteredUsers && userMetrics && <UsersList users={filteredUsers} userMetrics={userMetrics} />
       )}
       {showUserModal && (
         <CreateUserModal
