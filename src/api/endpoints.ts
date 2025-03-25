@@ -13,3 +13,4 @@ export const CREATERANK = "/policies/createrank";
 export const GETUSERSFORROLE = "/users";
 export const SENDRESETLINK = "/auth/resetpassword";
 export const VERIFYRESETTOKEN = "/auth/verifyresettoken";
+export const CREATEGROUP = "/conversations/creategroup";

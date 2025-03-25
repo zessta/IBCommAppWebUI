@@ -11,8 +11,9 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "../assets/CloseIcon.svg";
-import { getUserForRole } from "../api/requests/users";
-import { getHubConnection } from "../utils/hubConnection";
+import { createGroupForUsers, getUserForRole } from "../api/requests/users";
+// import { getHubConnection } from "../utils/hubConnection";
+import { useAlert } from "../context/AlertContext";
 
 interface Role {
   roleId: number;
@@ -33,15 +34,36 @@ const UserRoleModal: React.FC<UserRoleModalProps> = ({
 }) => {
   const [users, setUsers] = useState([]);
   const groupName = useRef<HTMLInputElement>(null);
+  const {showAlert} = useAlert();
 
-  const handleCreateGroup = () => {
-    const userIds = users?.map((user:any) => user?.userId);
-    // const connection = getHubConnection();
-    // if(connection){
-    //   connection.invoke("CreateGroup", groupName?.current?.value, userIds);
-    // }
-    // connection?.on("GroupCreated",(groupId, groupName)=> {console.log(groupId); console.log(groupName)})
-  }
+  const handleCreateGroup = async () => {
+    const userIds = users?.map((user: any) => user?.userId);
+    const groupNameValue = groupName.current?.value?.trim();
+
+    if (!groupNameValue) {
+      showAlert("Group name cannot be empty.", "error");
+      return;
+    }
+
+    if (userIds.length === 0) {
+      showAlert("No users available to create a group.", "error");
+      return;
+    }
+
+    try {
+      const response = await createGroupForUsers({
+        groupName: groupNameValue,
+        memberUserIds: userIds,
+      });
+      if (response.status === 200) {
+        showAlert("Group created successfully", "success");
+      }
+    } catch {
+      showAlert("Failed to create group", "error");
+    } finally {
+      handleClose();
+    }
+  };
 
   const fetchUsersForRank = async () => {
     const response = await getUserForRole(rank.roleName);
