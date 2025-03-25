@@ -1,7 +1,7 @@
 import { CREATEPASSWORD, EMAILCONFIRMATION } from "../../routes/routePaths";
 import { baseUrl } from "../../utils/constants";
 import { client } from "../client";
-import { ALLUSERS, GETUSERMETRICS, GETUSERSFORROLE, REGISTER } from "../endpoints";
+import { ALLUSERS, CREATEGROUP, GETUSERMETRICS, GETUSERSFORROLE, REGISTER } from "../endpoints";
 
 export const getUsers = async () => {
   const response = await client.get(`${baseUrl}${ALLUSERS}`);
@@ -33,3 +33,8 @@ export const getUserForRole = async (rank:string) => {
   const response = await client.get(`${baseUrl}/policies/${rank}${GETUSERSFORROLE}`);
   return response;
 };
+
+export const createGroupForUsers = async ({groupName, memberUserIds}:{groupName:string, memberUserIds:number[]}) => {
+  const response = await client.post(`${baseUrl}${CREATEGROUP}`,{groupName, memberUserIds});
+  return response;
+}

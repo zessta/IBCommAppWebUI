@@ -33,6 +33,14 @@ interface NewUser {
   dateOfBirth: Date | null;
 }
 
+interface ErrorState {
+  fullName: string;
+  email: string;
+  dateOfBirth: string;
+  rank: string;
+  mobileNo: string;
+}
+
 const CreateUserModal: React.FC<CreateUserModalProps> = ({
   open,
   handleClose,
@@ -47,18 +55,67 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({
     rank: "",
     dateOfBirth: null,
   });
+  const [errors, setErrors] = useState<ErrorState>({
+    fullName: "",
+    email: "",
+    dateOfBirth: "",
+    rank: "",
+    mobileNo: "",
+  });
   const { roles, loading, error } = useRoles();
 
   const handleChange = (field: keyof NewUser, value: string | Date | null) => {
     setNewUser((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: "" })); // Clear error on change
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: ErrorState = {
+      fullName: "",
+      email: "",
+      dateOfBirth: "",
+      rank: "",
+      mobileNo: "",
+    };
+    let isValid = true;
+
+    if (!newUser.fullName.trim()) {
+      newErrors.fullName = "Full Name is required.";
+      isValid = false;
+    }
+
+    if (!newUser.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newUser.email)) {
+      newErrors.email = "Valid Email is required.";
+      isValid = false;
+    }
+
+    if (!newUser.dateOfBirth) {
+      newErrors.dateOfBirth = "Date of Birth is required.";
+      isValid = false;
+    }
+
+    if (!newUser.rank.trim()) {
+      newErrors.rank = "Rank is required.";
+      isValid = false;
+    }
+
+    if (!newUser.mobileNo.trim() || !/^\d{10}$/.test(newUser.mobileNo)) {
+      newErrors.mobileNo = "Valid 10-digit Mobile No. is required.";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const handleSubmit = async () => {
-    try {
-      await registerUser({ newUser });
-      handleClose();
-    } catch (error) {
-      console.error("Error registering user:", error);
+    if (validateForm()) {
+      try {
+        await registerUser({ newUser });
+        handleClose();
+      } catch (error) {
+        console.error("Error registering user:", error);
+      }
     }
   };
 
@@ -110,6 +167,8 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({
                 placeholder="Enter Full Name"
                 value={newUser.fullName}
                 onChange={(e) => handleChange("fullName", e.target.value)}
+                error={!!errors.fullName}
+                helperText={errors.fullName}
                 sx={textFieldStyles}
               />
             </Grid2>
@@ -134,6 +193,8 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({
                 placeholder="Enter Mobile No."
                 value={newUser.mobileNo}
                 onChange={(e) => handleChange("mobileNo", e.target.value)}
+                error={!!errors.mobileNo}
+                helperText={errors.mobileNo}
                 sx={textFieldStyles}
               />
             </Grid2>
@@ -158,6 +219,8 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({
                 placeholder="Enter Email"
                 value={newUser.email}
                 onChange={(e) => handleChange("email", e.target.value)}
+                error={!!errors.email}
+                helperText={errors.email}
                 sx={textFieldStyles}
               />
             </Grid2>
@@ -183,6 +246,8 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({
                 placeholder="Select Role"
                 value={newUser.rank}
                 onChange={(e) => handleChange("rank", e.target.value)}
+                error={!!errors.rank}
+                helperText={errors.rank}
                 sx={textFieldStyles}
               >
                 {roles && roles.map((role) => (
@@ -210,6 +275,8 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({
                     e.target.value ? new Date(e.target.value) : null
                   )
                 }
+                error={!!errors.dateOfBirth}
+                helperText={errors.dateOfBirth}
                 sx={textFieldStyles}
               />
             </Grid2>

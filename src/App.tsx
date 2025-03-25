@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import Routes from "./routes/Routes";
-import { closeHubConnection, createHubConnection, getHubConnection } from "./utils/hubConnection";
-import { getItem } from "./utils/utils";
+// import { closeHubConnection, createHubConnection, getHubConnection } from "./utils/hubConnection";
+// import { getItem } from "./utils/utils";
 
 const App = () => {
-  const initializeSocket = async () => {
-    const accessToken = getItem("token")??"";
-    const hubUrl = process.env.REACT_APP_HUB_URL??"";
-    const connection = await createHubConnection(hubUrl, accessToken);
+  // const initializeSocket = async () => {
+  //   const accessToken = getItem("token")??"";
+  //   const hubUrl = process.env.REACT_APP_HUB_URL??"";
+  //   const connection = await createHubConnection(hubUrl, accessToken);
   
     // connection.on("ReceiveMessage", (message) => {
     //   console.log("Message received:", message);
@@ -15,7 +15,7 @@ const App = () => {
   
     // // To send a message
     // connection.invoke("SendMessage", "Hello, World!");
-  };
+  // };
   // useEffect(() => {
   //   initializeSocket();
   //   return () => {
