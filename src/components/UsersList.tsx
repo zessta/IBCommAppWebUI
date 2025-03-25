@@ -11,6 +11,7 @@ import {
 import { BLUE, BROWN, GRAY, WHITE } from "../utils/constants";
 import Profile from "../assets/Profile.svg";
 import EditOutlinedIcon from "../assets/brownTheme/EditOutlinedIcon.svg";
+import { getInitials } from "../utils/utils";
 
 interface User {
   userId: string;
@@ -55,7 +56,7 @@ const UsersList: React.FC<UsersListProps> = ({ users, userMetrics }) => {
       {mergedData && mergedData.map((user) => (
         <Card key={user.userId} sx={cardStyles}>
           <Box sx={headerBoxStyles}>
-            <Avatar alt="User Avatar" src={Profile} sx={avatarStyles} />
+            <Avatar sx={avatarStyles}>{getInitials(user?.fullName)}</Avatar>
             <Box sx={userInfoBoxStyles}>
               <Grid2 container spacing={3}>
                 <Grid2 size={6}>
@@ -113,13 +114,13 @@ const UsersList: React.FC<UsersListProps> = ({ users, userMetrics }) => {
                   </Typography>
                 </Grid2>
               </Grid2>
-              <Grid2 size={4} sx={editIconBoxStyles}>
+              {/* <Grid2 size={4} sx={editIconBoxStyles}>
                 <img
                   src={EditOutlinedIcon}
                   style={editIconStyles}
                   alt="Edit Icon"
                 />
-              </Grid2>
+              </Grid2> */}
             </Grid2>
           </Box>
           <Box p={2}>
@@ -200,6 +201,7 @@ const avatarStyles: SxProps = {
   width: "150px",
   height: "150px",
   mr: 2,
+  fontSize:"50px"
 };
 
 const userInfoBoxStyles: SxProps = {

@@ -12,10 +12,12 @@ import { getItem } from "../utils/utils";
 import SignOut from "../components/SignOut";
 import PageNotFound from "../pages/PageNotFound";
 import EventTag from "../pages/EventTag";
-import { ACCESSDENIED, BASE, EVENTTAGPATH, LOGINPATH, ROLESPATH, SIGNOUTPATH, SIGNUPPATH, USERSPATH } from "./routePaths";
+import { ACCESSDENIED, BASE, EVENTTAGPATH, FORGOTPASSWORD, LOGINPATH, RESETPASSWORD, ROLESPATH, SIGNOUTPATH, SIGNUPPATH, USERSPATH } from "./routePaths";
 import Roles from "../pages/Roles";
 import Users from "../pages/Users";
 import Dashboard from "../pages/Dashboard";
+import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
 
 const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
   const token = getItem("token");
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
   {
     path: SIGNOUTPATH,
     element: <SignOut />,
+  },
+  {
+    path: FORGOTPASSWORD,
+    element: <ForgotPassword />,
+  },
+  {
+    path: RESETPASSWORD,
+    element: <ResetPassword />,
   },
   {
     path: BASE,

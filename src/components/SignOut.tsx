@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Box, CircularProgress, Typography, SxProps } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { removeItem } from "../utils/utils";
-import { WHITE } from "../utils/constants";
+import { BLUE, WHITE } from "../utils/constants";
 
 const SignOut = () => {
   const navigate = useNavigate();
@@ -40,5 +40,5 @@ const progressStyles: SxProps = {
 };
 
 const textStyles: SxProps = {
-  color: "white",
+  color: BLUE.dark,
 };
