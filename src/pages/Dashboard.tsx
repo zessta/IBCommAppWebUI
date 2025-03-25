@@ -53,11 +53,11 @@ const Dashboard = () => {
           </Card>
           <Card sx={cardStyles}>
             <Typography sx={cardCountStyles}>{dashboardData?.numberOfUsers}</Typography>
-            <Typography sx={cardTextStyles}>Roles</Typography>
+            <Typography sx={cardTextStyles}>Users</Typography>
           </Card>
           <Card sx={cardStyles}>
             <Typography sx={cardCountStyles}>{dashboardData?.numberOfGroups}</Typography>
-            <Typography sx={cardTextStyles}>Users</Typography>
+            <Typography sx={cardTextStyles}>Groups</Typography>
           </Card>
       </Box>
       <RecentEventTags eventTagData = {dashboardData?.eventTagData}/>

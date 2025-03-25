@@ -10,4 +10,6 @@ export const GETDASHBOARDTAGDATA = "/dashboard/tagdata";
 export const GETUSERMETRICS = "/dashboard/userdata";
 export const GETMODULEACTIONS = "/policies/list/moduleactions";
 export const CREATERANK = "/policies/createrank";
-export const GETUSERSFORROLE = `/users`;
+export const GETUSERSFORROLE = "/users";
+export const SENDRESETLINK = "/auth/resetpassword";
+export const VERIFYRESETTOKEN = "/auth/verifyresettoken";

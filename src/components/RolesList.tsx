@@ -40,7 +40,7 @@ const RolesList: React.FC<RolesListProps> = ({ roles, setCurrentEditingRole }) =
               {role.roleName}
               <img src={ActiveIcon} style={{ marginLeft: 8 }} />
             </MenuItem>
-            <Box sx={iconBoxStyles}>
+            {/* <Box sx={iconBoxStyles}>
               <img
                 src={EditIcon}
                 onClick={(e) => {
@@ -50,13 +50,13 @@ const RolesList: React.FC<RolesListProps> = ({ roles, setCurrentEditingRole }) =
                 style={{ cursor: "pointer" }}
               />
               <img src={MenuDotsIcon} />
-            </Box>
+            </Box> */}
           </Box>
-          <Box sx={descriptionBoxStyles}>
+          {/* <Box sx={descriptionBoxStyles}>
             <Typography variant="body1" sx={descriptionTextStyles}>
               {role.description}
             </Typography>
-          </Box>
+          </Box> */}
         </Box>
       ))}
       {showModal && selectedRank && (
@@ -83,7 +83,7 @@ const outerBoxStyles: SxProps = {
 const cardStyles: SxProps = {
   width: "calc(33.33% - 40px)",
   margin: "8px",
-  minHeight: "139px",
+  // minHeight: "139px",
   bgcolor: GRAY.light,
   borderRadius: "25px",
   p: "12px",

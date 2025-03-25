@@ -11,12 +11,13 @@ import {
   IconButton,
   CircularProgress,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { signInApi } from "../api/requests/signIn";
 import { getItem, setItem } from "../utils/utils";
 import { BLUE, GRAY, WHITE } from "../utils/constants";
 import AppLogoViolet from "../assets/brownTheme/AppLogo.svg";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { FORGOTPASSWORD } from "../routes/routePaths";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -114,6 +115,13 @@ const Login: React.FC = () => {
                 }}
                 sx={textFieldStyles}
               />
+              <Box sx={{ mt: 2, textAlign: "right" }}>
+                <Link to={FORGOTPASSWORD} style={{ textDecoration: "none", color: BLUE.dark }}>
+                  <Typography variant="body2" sx={{ fontSize: "16px" }}>
+                    Forgot Password?
+                  </Typography>
+                </Link>
+              </Box>
               {errorMessage && (
                 <Typography color="error" sx={{ mt: 2 }}>
                   {errorMessage}
@@ -199,7 +207,7 @@ const textFieldStyles: SxProps = {
 
 const buttonStyles: SxProps = {
   bgcolor: BLUE.dark,
-  mt: 6,
+  mt: 4,
   height: "69.70000457763672px",
   borderRadius: "13.33px",
   fontSize: "27.2px",

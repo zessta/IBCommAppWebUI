@@ -14,6 +14,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { BLUE, GRAY, WHITE } from "../utils/constants";
 import { createPassword, isUserPasswordCreated } from "../api/requests/users";
 import AppLogoViolet from "../assets/brownTheme/AppLogo.svg";
+import { useAlert } from "../context/AlertContext";
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
@@ -28,18 +29,23 @@ const SignUp: React.FC = () => {
     confirmPassword: "",
   });
   const [statusText, setStatusText] = useState("");
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     setLoader(true);
     const fetchUserStatus = async () => {
       try {
         const userStatus = await isUserPasswordCreated({ token: userKey ?? "" });
+       if(userStatus.status === 200){
         if (userStatus.data) {
           setStatusText("Password Already Created, Redirecting to Sign in...");
           setIsPasswordCreated(userStatus.data);
         }
-      } catch (error) {
-        console.error("Error fetching user status:", error);
+       } else {
+          showAlert("Failed to fetch user status.", "error");
+        }
+      } catch {
+        showAlert("An error occurred while fetching user status.", "error");
       } finally {
         setLoader(false);
       }
@@ -98,9 +104,12 @@ const SignUp: React.FC = () => {
             "Password Created Successfully, You will be re-directed to Sign in..."
           );
           setIsPasswordCreated(true);
+          showAlert("Password created successfully!", "success");
+        } else {
+          showAlert(response?.data?.message || "Failed to create password.", "error");
         }
       } catch (error) {
-        console.error("Error creating password:", error);
+        showAlert("An error occurred while creating the password.", "error");
       }
     }
   };

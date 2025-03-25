@@ -3,9 +3,11 @@ import { Avatar, Box, Card, Typography, SxProps } from "@mui/material";
 import React from "react";
 import { BLUE, BROWN, GRAY, WHITE } from "../utils/constants";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import { getInitials } from "../utils/utils";
 
 interface UserTag {
   userId: string;
+  userName: string;
   eventTagStatusName: string;
 }
 
@@ -20,6 +22,7 @@ interface RecentEventTagsProps {
 }
 
 const RecentEventTags: React.FC<RecentEventTagsProps> = ({ eventTagData }) => {
+
   return eventTagData.length > 0 ? (
     <Box sx={outerBoxStyles}>
       {eventTagData && eventTagData.map((eventTag) => (
@@ -27,9 +30,9 @@ const RecentEventTags: React.FC<RecentEventTagsProps> = ({ eventTagData }) => {
           <Typography sx={cardTitleStyles}>#{eventTag.eventTagName}</Typography>
           {eventTag.userTagData.map((userTag) => (
             <Box key={userTag.userId} sx={avatarBoxStyles}>
-              <Avatar>{userTag.userId}</Avatar>
+              <Avatar>{getInitials(userTag.userName)}</Avatar>
               <Box>
-                <Typography sx={nameTextStyles}>{userTag.userId}</Typography>
+                <Typography sx={nameTextStyles}>{userTag.userName}</Typography>
                 <Typography sx={statusTextStyles}>
                   {userTag.eventTagStatusName}
                 </Typography>

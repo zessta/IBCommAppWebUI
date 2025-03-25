@@ -44,14 +44,14 @@ const EventTagsList: React.FC<EventTagsListProps> = ({ tags, setCurrentTag }) =>
               {"#" + tag.name}
               <img src={ActiveIcon} style={{ marginLeft: 8 }} />
             </MenuItem>
-            <Box sx={iconBoxStyles}>
+            {/* <Box sx={iconBoxStyles}>
               <img
                 src={EditIcon}
                 onClick={() => setCurrentTag(tag)}
                 style={{ cursor: "pointer" }}
               />
               <img src={PieIcon} />
-            </Box>
+            </Box> */}
           </Box>
           {tag.statuses.length > 0 && (
             <Box sx={statusBoxStyles}>
