@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { signInApi } from "../api/requests/signIn";
 import { getItem, setItem } from "../utils/utils";
 import { BLUE, GRAY, WHITE } from "../utils/constants";
-import AppLogoViolet from "../assets/brownTheme/AppLogo.svg";
+import AppLogoViolet from "../assets/violetTheme/AppLogo.svg";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Login: React.FC = () => {
@@ -69,7 +69,7 @@ const Login: React.FC = () => {
         <Grid2 container>
           <Grid2 size={6} sx={leftGridStyles}>
             <Box sx={leftBoxStyles}>
-              <img src={AppLogoViolet} alt="App Logo" />
+              <img style={{width:180, height: 180}} src={AppLogoViolet} alt="App Logo" />
               <Typography variant="h5" sx={titleStyles}>
                 Sign in
               </Typography>
