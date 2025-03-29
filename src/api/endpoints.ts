@@ -16,3 +16,5 @@ export const VERIFYRESETTOKEN = "/auth/verifyresettoken";
 export const CREATEGROUP = "/conversations/creategroup";
 export const CREATERANK = "/ranks/add";
 export const GETALLRANKUSERS = "/ranks/listusers";
+export const REMOVERANKFROMUSER = "/ranks/remove";
+export const REMOVERANK = "/ranks";

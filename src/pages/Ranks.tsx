@@ -6,9 +6,10 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { Modal, TextField } from "@mui/material";
 import { useAlert } from "../context/AlertContext";
 import { Menu, MenuItem } from "@mui/material";
-import { createRank, getAllRanks } from "../api/requests/ranks";
+import { createRank, getAllRanks, getUsersByRankId, removeRank } from "../api/requests/ranks";
 import { GRAY } from "../utils/constants";
 import newStyled from "@emotion/styled";
+import UsersByRankId from "../components/UsersByRankId";
 
 const Ranks = () => {
   const [open, setOpen] = useState(false);
@@ -19,6 +20,7 @@ const Ranks = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedRank, setSelectedRank] = useState<string | null>(null);
   const [editRowId, setEditRowId] = useState<number | null>(null); // Track the row being edited
+  const [usersByRank, setUsersByRank] = useState<any[]>([]);
   const openMenu = Boolean(anchorEl);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, rank: string, rowId: number) => {
@@ -60,8 +62,18 @@ const Ranks = () => {
     }
   };
 
-  const handleDelete = () => {
-    console.log("Delete clicked for rank:", selectedRank);
+  const handleDelete = async (rankId:any) => {
+
+    try{
+        const response = await removeRank(rankId);
+        if(response.status===200){
+            showAlert(rankId + "deleted successfully", "success")
+            // setSelectedRank(null)
+        }
+    }
+    catch{
+        showAlert("An error occurred", "error");
+    }
     handleMenuClose();
   };
 
@@ -133,7 +145,7 @@ const Ranks = () => {
             }}
           >
             <MenuItem onClick={()=>handleEdit(params.row.id)}>Edit</MenuItem>
-            <MenuItem onClick={handleDelete}>Delete</MenuItem>
+            <MenuItem onClick={()=>handleDelete(params.row.id)}>Delete</MenuItem>
           </Menu>
         </>
       ),
@@ -185,6 +197,21 @@ const Ranks = () => {
     }
   },[ranks]
 )
+
+    const fetchUsersByRank = async(params:any) => {
+        console.log(params)
+        setSelectedRank(params.row.rankName)
+        try{
+            const response = await getUsersByRankId(params.row.id);
+            if(response.status === 200){
+                setUsersByRank(response.data)
+            }
+        }
+        catch{
+            console.log()
+        }
+    }
+
   useEffect(() => {
     fetchAllRanks(); // Initial fetch of ranks
   }, []);
@@ -197,14 +224,19 @@ const Ranks = () => {
         maxWidth:"100%",
         height:"100%",
         bgcolor:"#fff",
-        borderRadius:"14px"
+        borderRadius:"14px",
+        display:"flex",
+        flexDirection:"column"
     }}}>
         <Box sx={{display:"flex", justifyContent:"space-between", py:"30px", pt:"50px",}}>
             <Typography variant="h5" fontWeight={"bold"} sx={{fontFamily: "Poppins, sans-serif",}}>Rank Management</Typography>
             <Button variant="contained" sx={{bgcolor:"#000000", textTransform:"none", gap:1 }} onClick={handleOpen}><AddOutlinedIcon/> Add Rank</Button>
         </Box>
-        <Box sx={{width:"50%", height:"80%"}}>
-            <CommDataGrid key={ranks.length} pageSize={7} columns={columns} rows={ranks} title="Rank Master" description="Manage all ranks in the system" sx={{fontFamily: "Poppins, sans-serif",}}/>
+        <Box sx={{width:"100%",flexGrow:1, display:"flex", justifyContent:"space-between"}}>
+            <Box sx={{width:"48%", height:"inherit"}}>
+                <CommDataGrid onRowClick={fetchUsersByRank} key={ranks.length} pageSize={7} columns={columns} rows={ranks} title="Rank Master" description="Manage all ranks in the system" sx={{fontFamily: "Poppins, sans-serif",}}/>
+            </Box>
+            {usersByRank.length>0 && <UsersByRankId key={usersByRank.length} users={usersByRank} rank={selectedRank} setSelectedRank={setSelectedRank} /> }
         </Box>
 
         {/* Add Rank Modal */}
