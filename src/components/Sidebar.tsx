@@ -18,7 +18,8 @@ import RolesIcon from "../assets/RolesIcon.svg";
 import UsersIcon from "../assets/UsersIcon.svg";
 import LogoutIcon from "../assets/LogoutIcon.svg";
 import { BLUE, BROWN } from "../utils/constants";
-import { BASE, EVENTTAGPATH, ROLESPATH, USERSPATH } from "../routes/routePaths";
+import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
+import { BASE, EVENTTAGPATH, RANKSPATH, ROLESPATH, USERSPATH } from "../routes/routePaths";
 
 interface MenuItem {
   id: number;
@@ -29,9 +30,10 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { id: 1, to: BASE, text: "Dashboard", icon: <img src={DashboardIcon} /> },
-  { id: 2, to: EVENTTAGPATH, text: "Tags", icon: <img src={TagsIcon} /> },
-  { id: 3, to: ROLESPATH, text: "Roles", icon: <img src={RolesIcon} /> },
-  { id: 4, to: USERSPATH, text: "Users", icon: <img src={UsersIcon} /> },
+  { id: 2, to: USERSPATH, text: "Users", icon: <img src={UsersIcon} /> },
+  { id: 3, to: RANKSPATH, text: "Ranks", icon: <ShieldOutlinedIcon fontSize="large"/> },
+  { id: 4, to: EVENTTAGPATH, text: "Tags", icon: <img src={TagsIcon} /> },
+  { id: 5, to: ROLESPATH, text: "Roles", icon: <img src={RolesIcon} /> },
 ];
 
 const Sidebar: React.FC = () => {

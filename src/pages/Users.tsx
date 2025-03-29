@@ -95,6 +95,7 @@ const UserManagementPage: React.FC = () => {
     fetchUserData();
   }, [fetchUserData]);
 
+
   // Columns for the DataGrid
   const columns: GridColDef[] = [
     {
