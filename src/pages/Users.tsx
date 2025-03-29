@@ -1,29 +1,26 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  TextField,
-  CircularProgress,
-  SxProps,
-} from "@mui/material";
+import React, { useEffect, useState, useCallback } from "react";
+import { Box, Button, TextField, CircularProgress, SxProps, Typography, IconButton } from "@mui/material";
 import { BLUE, GRAY, WHITE } from "../utils/constants";
 import SearchIcon from "../assets/SearchIcon.svg";
 import AddIcon from "@mui/icons-material/Add";
-import UsersList from "../components/UsersList";
-import CreateUserModal from "../components/CreateUserModal";
-import { getUsers, getUserMetrics } from "../api/requests/users";
+import CommDataGrid from "../components/CommDataGrid"; // Ensure you have the CommDataGrid component
+import { getUsers, getUserMetrics } from "../api/requests/users"; // Import API functions
+import { GridColDef } from "@mui/x-data-grid";
 
+// Define User and UserMetrics interfaces
 interface User {
   userId: string;
-  fullName: string;
-  mobileNo: string;
+  name: string;
+  mobile: string;
   email: string;
   dateOfBirth: string;
   policeStation: string;
   zone: string;
   location: string;
   rank: string;
+  position: string;
+  region: string;
+  status: string;
 }
 
 interface UserMetrics {
@@ -34,20 +31,15 @@ interface UserMetrics {
   groupsJoined?: number;
 }
 
-const Users: React.FC = () => {
-  const [showUserModal, setShowUserModal] = useState(false);
-  const [searchUser, setSearchUser] = useState("");
-  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+const UserManagementPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [userMetrics, setUserMetrics] = useState<UserMetrics[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const [searchUser, setSearchUser] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleCloseUserCreation = () => {
-    setShowUserModal(false);
-    fetchUserData();
-  };
-
-  const fetchUserData = async () => {
+  // Fetch data from API
+  const fetchUserData = useCallback(async () => {
     setLoading(true);
     try {
       await Promise.all([fetchUsers(), fetchUserMetrics()]);
@@ -56,12 +48,25 @@ const Users: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
+  // Fetch users and metrics
   const fetchUsers = async () => {
     try {
       const response = await getUsers();
-      setUsers(response.data);
+      if (response.status === 200) {
+        const usersWithMappedFields = response.data.map((user: any) => ({
+          name: user.fullName, // Mapping `fullName` to `name`
+          id: user.userId, // Ensure `id` is set for DataGrid
+          mobile: user.mobileNo, // Mapping `mobileNo` to `mobile`
+          position: user.position || '', // Ensure `position` is available
+          region: user.region || '', // Ensure `region` is available
+          status: user.status || '', // Ensure `status` is available
+          email: user.email,
+          rank: user.rank,
+        }));
+        setUsers(usersWithMappedFields); // Update users state
+      }
     } catch (error) {
       console.error("Failed to fetch users:", error);
     }
@@ -76,16 +81,94 @@ const Users: React.FC = () => {
     }
   };
 
+  // Filter users based on search input
+  useEffect(() => {
+    setFilteredUsers(
+      users.filter((user) =>
+        user?.name?.toLowerCase().includes(searchUser.toLowerCase())
+      )
+    );
+  }, [searchUser, users]);
+
+  // Fetch the data when the component mounts
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [fetchUserData]);
 
-  useEffect(() => {
-    const filtered = users?.filter((user) =>
-      user.fullName.toLowerCase().includes(searchUser.toLowerCase())
-    );
-    setFilteredUsers(filtered);
-  }, [searchUser, users]);
+  // Columns for the DataGrid
+  const columns: GridColDef[] = [
+    {
+      field: 'name',
+      headerName: 'Name',
+      flex: 1,
+      headerClassName: 'custom-header',
+      renderCell: (params) => (
+        <Typography variant="body2" fontWeight="bold" sx={{ display: 'contents' }}>
+          {params.value}
+        </Typography>
+      ),
+    },
+    {
+      field: 'position',
+      headerName: 'Position',
+      flex: 1,
+      headerClassName: 'custom-header',
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      flex: 1,
+      headerClassName: 'custom-header',
+    },
+    {
+      field: 'mobile',
+      headerName: 'Mobile',
+      flex: 1,
+      headerClassName: 'custom-header',
+    },
+    {
+      field: 'rank',
+      headerName: 'Rank',
+      flex: 1,
+      headerClassName: 'custom-header',
+    },
+    {
+      field: 'region',
+      headerName: 'Region',
+      flex: 1,
+      headerClassName: 'custom-header',
+    },
+    {
+      field: 'status',
+      headerName: 'Status',
+      flex: 1,
+      headerClassName: 'custom-header',
+      renderCell: (params) => (
+        <span
+          style={{
+            backgroundColor: params.value === 'Active' ? '#e0f7fa' : '#ffebee',
+            color: params.value === 'Active' ? '#006064' : '#d32f2f',
+            padding: '5px 10px',
+            borderRadius: '15px',
+            fontSize: '12px',
+          }}
+        >
+          {params.value || ''}
+        </span>
+      ),
+    },
+    {
+      field: 'actions',
+      headerName: '',
+      flex: 1,
+      headerClassName: 'custom-header',
+      renderCell: () => (
+        <IconButton>
+          <span style={{ color: '#64748B', fontSize: '14px' }}>...</span>
+        </IconButton>
+      ),
+    },
+  ];
 
   return (
     <Box sx={outerBoxStyles}>
@@ -102,33 +185,42 @@ const Users: React.FC = () => {
             },
           }}
         />
-        <Button
-          variant="contained"
-          sx={addButtonStyles}
-          onClick={() => setShowUserModal(true)}
-        >
+        <Button variant="contained" sx={addButtonStyles}>
           <AddIcon sx={{ mr: 1 }} /> Add User
         </Button>
       </Box>
+
       {loading ? (
         <Box sx={loadingBoxStyles}>
           <CircularProgress size={60} thickness={6} />
         </Box>
-      ) : (
-        filteredUsers && userMetrics && <UsersList users={filteredUsers} userMetrics={userMetrics} />
-      )}
-      {showUserModal && (
-        <CreateUserModal
-          open={showUserModal}
-          handleClose={handleCloseUserCreation}
-        />
-      )}
+      ) : null}
+
+      <Box sx={{ height: "100%" }}>
+        {/* Conditionally render CommDataGrid only if filteredUsers has data */}
+        {filteredUsers.length > 0 ? (
+          <CommDataGrid
+            title="User Management"
+            description="View and manage all users in the system"
+            rows={filteredUsers} // Pass filtered users as rows
+            columns={columns}
+            sx={{ height: "100%", width: "100%" }}
+          />
+        ) : (
+          !loading && (
+            <Typography variant="body2" color="textSecondary">
+              No users found.
+            </Typography>
+          )
+        )}
+      </Box>
     </Box>
   );
 };
 
-export default Users;
+export default UserManagementPage;
 
+// Styles for the component
 const outerBoxStyles: SxProps = {
   flexGrow: 1,
   bgcolor: WHITE.main,
