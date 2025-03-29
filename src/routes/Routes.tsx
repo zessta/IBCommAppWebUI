@@ -12,12 +12,13 @@ import { getItem } from "../utils/utils";
 import SignOut from "../components/SignOut";
 import PageNotFound from "../pages/PageNotFound";
 import EventTag from "../pages/EventTag";
-import { ACCESSDENIED, BASE, EVENTTAGPATH, FORGOTPASSWORD, LOGINPATH, RESETPASSWORD, ROLESPATH, SIGNOUTPATH, SIGNUPPATH, USERSPATH } from "./routePaths";
+import { ACCESSDENIED, BASE, EVENTTAGPATH, FORGOTPASSWORD, LOGINPATH, RANKSPATH, RESETPASSWORD, ROLESPATH, SIGNOUTPATH, SIGNUPPATH, USERSPATH } from "./routePaths";
 import Roles from "../pages/Roles";
 import Users from "../pages/Users";
 import Dashboard from "../pages/Dashboard";
 import ForgotPassword from "../pages/ForgotPassword";
 import ResetPassword from "../pages/ResetPassword";
+import Ranks from "../pages/Ranks";
 
 const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
   const token = getItem("token");
@@ -77,6 +78,14 @@ const router = createBrowserRouter([
         element: (
           <AuthWrapper>
             <Roles />
+          </AuthWrapper>
+        ),
+      },
+      {
+        path: RANKSPATH,
+        element: (
+          <AuthWrapper>
+            <Ranks />
           </AuthWrapper>
         ),
       },

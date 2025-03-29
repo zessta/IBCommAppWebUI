@@ -11,3 +11,4 @@ export const ACCESSDENIED = "/accessDenied";
 export const NOTFOUND = "*";
 export const FORGOTPASSWORD = "/forgotpassword";
 export const RESETPASSWORD = "/resetpassword";
+export const RANKSPATH = "ranks";

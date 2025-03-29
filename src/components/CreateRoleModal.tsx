@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "../assets/CloseIcon.svg";
 import { BLUE, GRAY } from "../utils/constants";
-import { createRank } from "../api/requests/roles";
+import { createRole } from "../api/requests/roles";
 import useModuleActions from "../hooks/useModuleActions";
 
 interface ModuleAction {
@@ -47,7 +47,8 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({
   const [roleTitle, setRoleTitle] = useState<string>("");
   const [selectedValues, setSelectedValues] = useState<SelectedValue[]>([]);
   const [errors, setErrors] = useState<ErrorState>({ rank: "", modules: "" });
-  const { moduleActions }: { moduleActions: ModuleAction[] } = useModuleActions();
+  const { moduleActions }: { moduleActions: ModuleAction[] } =
+    useModuleActions();
 
   const handleChange = (event: SelectChangeEvent<string[]>, index: number) => {
     const value = event.target.value as string[];
@@ -98,7 +99,7 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({
 
   const handleSubmit = async () => {
     if (validateForm()) {
-      await createRank({ rank: roleTitle, moduleActions: selectedValues });
+      await createRole({ rank: roleTitle, moduleActions: selectedValues });
       handleClose();
     }
   };
@@ -297,4 +298,3 @@ const buttonStyles: SxProps = {
   width: "96px",
   textTransform: "none",
 };
-

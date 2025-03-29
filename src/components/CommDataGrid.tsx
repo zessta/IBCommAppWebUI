@@ -121,7 +121,7 @@ const CommDataGrid: React.FC<CommDataGridProps> = ({
       </Box>
 
       {/* DataGrid Section */}
-      <Box sx={{ height: 400, width: '100%' }}>
+      <Box sx={{ minHeight: 400, width: '100%' }}>
         <DataGrid
           rows={filteredRows}
           columns={columns}
@@ -130,9 +130,10 @@ const CommDataGrid: React.FC<CommDataGridProps> = ({
             pagination: { paginationModel: { pageSize } },
           }}
           onRowClick={onRowClick}
-          rowSelectionModel={selectionModel} // Use rowSelectionModel prop to control selection
-          onRowSelectionModelChange={(newSelection) => setSelectionModel(newSelection as number[])} // Update selectionModel on change
-          onRowDoubleClick={handleRowDoubleClick} // Unselect on double click
+          disableRowSelectionOnClick
+          // rowSelectionModel={selectionModel} // Use rowSelectionModel prop to control selection
+          // onRowSelectionModelChange={(newSelection) => setSelectionModel(newSelection as number[])} // Update selectionModel on change
+          // onRowDoubleClick={handleRowDoubleClick} // Unselect on double click
           disableColumnResize
           disableAutosize
           sx={{
